@@ -2172,6 +2172,108 @@
             padding-right: 6px;
         }
 
+        /* --- CUSTOM SCROLLBAR (Desktop) --- */
+        /* Webkit (Chrome, Edge, Safari) */
+        .flashcard-front .flashcard-content::-webkit-scrollbar,
+        .flashcard-back .flashcard-content::-webkit-scrollbar,
+        .flashcard-front pre::-webkit-scrollbar,
+        .flashcard-back pre::-webkit-scrollbar,
+        .modal-content::-webkit-scrollbar,
+        .fc-inline-edit::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .flashcard-front .flashcard-content::-webkit-scrollbar-track,
+        .flashcard-back .flashcard-content::-webkit-scrollbar-track,
+        .flashcard-front pre::-webkit-scrollbar-track,
+        .flashcard-back pre::-webkit-scrollbar-track,
+        .modal-content::-webkit-scrollbar-track,
+        .fc-inline-edit::-webkit-scrollbar-track {
+            background: transparent;
+            border-radius: 10px;
+        }
+
+        .flashcard-front .flashcard-content::-webkit-scrollbar-thumb,
+        .flashcard-back .flashcard-content::-webkit-scrollbar-thumb,
+        .modal-content::-webkit-scrollbar-thumb,
+        .fc-inline-edit::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.25);
+            border-radius: 10px;
+            transition: background 0.2s;
+        }
+
+        .flashcard-front .flashcard-content::-webkit-scrollbar-thumb:hover,
+        .flashcard-back .flashcard-content::-webkit-scrollbar-thumb:hover,
+        .modal-content::-webkit-scrollbar-thumb:hover,
+        .fc-inline-edit::-webkit-scrollbar-thumb:hover {
+            background: rgba(99, 102, 241, 0.45);
+        }
+
+        /* Code block scrollbar thumb (horizontal) */
+        .flashcard-front pre::-webkit-scrollbar-thumb,
+        .flashcard-back pre::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.3);
+            border-radius: 10px;
+        }
+
+        .flashcard-front pre::-webkit-scrollbar-thumb:hover,
+        .flashcard-back pre::-webkit-scrollbar-thumb:hover {
+            background: rgba(148, 163, 184, 0.5);
+        }
+
+        /* Dark mode scrollbar overrides */
+        body.dark-mode .flashcard-front .flashcard-content::-webkit-scrollbar-thumb,
+        body.dark-mode .flashcard-back .flashcard-content::-webkit-scrollbar-thumb,
+        body.dark-mode .modal-content::-webkit-scrollbar-thumb,
+        body.dark-mode .fc-inline-edit::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.3);
+        }
+
+        body.dark-mode .flashcard-front .flashcard-content::-webkit-scrollbar-thumb:hover,
+        body.dark-mode .flashcard-back .flashcard-content::-webkit-scrollbar-thumb:hover,
+        body.dark-mode .modal-content::-webkit-scrollbar-thumb:hover,
+        body.dark-mode .fc-inline-edit::-webkit-scrollbar-thumb:hover {
+            background: rgba(139, 92, 246, 0.5);
+        }
+
+        body.dark-mode .flashcard-front pre::-webkit-scrollbar-thumb,
+        body.dark-mode .flashcard-back pre::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.2);
+        }
+
+        body.dark-mode .flashcard-front pre::-webkit-scrollbar-thumb:hover,
+        body.dark-mode .flashcard-back pre::-webkit-scrollbar-thumb:hover {
+            background: rgba(148, 163, 184, 0.4);
+        }
+
+        /* Firefox scrollbar */
+        .flashcard-front .flashcard-content,
+        .flashcard-back .flashcard-content,
+        .modal-content,
+        .fc-inline-edit {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(99, 102, 241, 0.25) transparent;
+        }
+
+        .flashcard-front pre,
+        .flashcard-back pre {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(148, 163, 184, 0.3) transparent;
+        }
+
+        body.dark-mode .flashcard-front .flashcard-content,
+        body.dark-mode .flashcard-back .flashcard-content,
+        body.dark-mode .modal-content,
+        body.dark-mode .fc-inline-edit {
+            scrollbar-color: rgba(139, 92, 246, 0.3) transparent;
+        }
+
+        body.dark-mode .flashcard-front pre,
+        body.dark-mode .flashcard-back pre {
+            scrollbar-color: rgba(148, 163, 184, 0.2) transparent;
+        }
+
         /* CODE BLOCK SAFETY */
         .flashcard-front pre,
         .flashcard-back pre {
