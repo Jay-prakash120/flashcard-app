@@ -40,13 +40,13 @@
 
         /* --- DARK MODE VARIABLES & OVERRIDES --- */
         body.dark-mode {
-            --bg-body: #0f172a;
-            --bg-card: #1e293b;
-            --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
-            --primary-light: #312e81;
+            --bg-body: #121010;
+            --bg-card: #1c1917;
+            --text-main: #d4c8b8;
+            --text-muted: #8a7e72;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.6);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.6);
+            --primary-light: #2a2035;
         }
 
         body.dark-mode header,
@@ -57,43 +57,129 @@
         body.dark-mode .flashcard-front,
         body.dark-mode .review-option {
             background-color: var(--bg-card);
-            border-color: #334155;
+            border-color: #2e2824;
         }
 
         body.dark-mode h1,
         body.dark-mode h2,
         body.dark-mode h3,
         body.dark-mode h4 {
-            color: #f1f5f9;
+            color: #d4c8b8;
         }
 
         body.dark-mode input,
         body.dark-mode select,
         body.dark-mode textarea {
-            background-color: #334155;
-            border-color: #475569;
-            color: #fff;
+            background-color: #1c1917;
+            border-color: #3d3530;
+            color: #d4c8b8;
         }
 
         body.dark-mode input:focus,
         body.dark-mode textarea:focus {
-            background-color: #1e293b;
+            background-color: #141210;
             border-color: var(--primary);
         }
 
         body.dark-mode .flashcard-back {
-            background: #064e3b;
-            border-color: #059669;
+            background: #1a1f16;
+            border-color: #3a4a30;
         }
 
         body.dark-mode .flashcard-input-group {
-            background: #334155;
-            border-color: #475569;
+            background: #1c1917;
+            border-color: #3d3530;
         }
 
         body.dark-mode .topic-details {
-            background: #334155;
-            border-color: #475569;
+            background: #1c1917;
+            border-color: #3d3530;
+        }
+
+        body.dark-mode .flashcard-face {
+            background: #141210;
+            border-color: #3a3428;
+        }
+
+        body.dark-mode .flashcard-front {
+            background: #141210;
+        }
+
+        body.dark-mode .menu-dropdown {
+            background: #1c1917;
+            border-color: #2e2824;
+        }
+
+        body.dark-mode .menu-item:hover {
+            background: #2e2824;
+        }
+
+        body.dark-mode .menu-item.delete:hover {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        body.dark-mode .difficulty-selector {
+            background: #121010;
+        }
+
+        body.dark-mode .difficulty-option.selected {
+            background: #2e2824;
+        }
+
+        body.dark-mode .topic-meta {
+            border-color: #2e2824;
+        }
+
+        body.dark-mode .progress-section {
+            border-color: #2e2824;
+        }
+
+        body.dark-mode .empty-state {
+            border-color: #2e2824;
+        }
+
+        body.dark-mode .control-btn {
+            background: #1c1917;
+            border-color: #2e2824;
+            color: #d4c8b8;
+        }
+
+        body.dark-mode .control-btn:hover {
+            background: #2e2824;
+            color: var(--primary);
+            border-color: #3d3530;
+        }
+
+        body.dark-mode .fc-cancel-btn {
+            background: #1c1917;
+            border-color: #3d3530 !important;
+            color: #8a7e72;
+        }
+
+        body.dark-mode .fc-cancel-btn:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: #fca5a5;
+            border-color: rgba(239, 68, 68, 0.2) !important;
+        }
+
+        body.dark-mode .add-card-btn {
+            border-color: var(--primary);
+            background: #141210;
+        }
+
+        body.dark-mode .add-card-btn:hover {
+            background: #2a2035;
+        }
+
+        body.dark-mode .fc-inline-edit {
+            background: #1c1917;
+        }
+
+        body.dark-mode .review-modal .modal-content,
+        body.dark-mode .flashcard-modal .modal-content,
+        body.dark-mode .edit-modal .modal-content {
+            background: #1c1917;
+            border: 1px solid #2e2824;
         }
 
         /* --- THEME TOGGLE (Top Right) --- */
@@ -457,25 +543,25 @@
 
         body.dark-mode .cloud-modal {
             background-color: var(--bg-card);
-            border: 1px solid #334155;
+            border: 1px solid #2e2824;
         }
 
         body.dark-mode .cloud-status {
-            background: rgba(16, 185, 129, 0.1);
-            border-color: rgba(16, 185, 129, 0.3);
+            background: rgba(16, 185, 129, 0.08);
+            border-color: rgba(16, 185, 129, 0.2);
             color: #6ee7b7;
         }
 
         body.dark-mode .btn-cloud.btn-restore {
-            background: rgba(16, 185, 129, 0.1);
+            background: rgba(16, 185, 129, 0.08);
             color: #6ee7b7;
-            border-color: rgba(16, 185, 129, 0.3);
+            border-color: rgba(16, 185, 129, 0.2);
         }
 
         body.dark-mode .btn-cloud.btn-disconnect {
-            background: rgba(239, 68, 68, 0.1);
+            background: rgba(239, 68, 68, 0.08);
             color: #fca5a5;
-            border-color: rgba(239, 68, 68, 0.3);
+            border-color: rgba(239, 68, 68, 0.2);
         }
 
         /* Simple Tooltip */
@@ -820,16 +906,16 @@
         }
 
         body.dark-mode .fc-drag-handle {
-            color: #4b5563;
+            color: #4a4038;
         }
 
         body.dark-mode .fc-drag-handle:hover {
             color: var(--primary);
-            background: rgba(99, 102, 241, 0.1);
+            background: rgba(99, 102, 241, 0.08);
         }
 
         body.dark-mode .flashcard-input-group {
-            background: #1a2236;
+            background: #1c1917;
         }
 
         .fc-card-number {
@@ -1051,9 +1137,9 @@
         }
 
         body.dark-mode .streak-card {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            border-color: #451a03;
-            box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.1);
+            background: linear-gradient(135deg, #1c1917 0%, #121010 100%);
+            border-color: #3d2e1a;
+            box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.08);
         }
 
         .streak-header {
@@ -1358,7 +1444,7 @@
         }
 
         body.dark-mode .week-tracker {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.02);
         }
 
         .day-column {
@@ -1389,8 +1475,8 @@
         }
 
         body.dark-mode .day-circle {
-            background: #334155;
-            color: #64748b;
+            background: #2e2824;
+            color: #6b5f54;
         }
 
         .day-circle.active {
@@ -1971,6 +2057,27 @@
             color: white;
         }
 
+        /* Dark mode review options */
+        body.dark-mode .option-again {
+            background: rgba(220, 38, 38, 0.1);
+            border-color: rgba(220, 38, 38, 0.2);
+        }
+
+        body.dark-mode .option-hard {
+            background: rgba(217, 119, 6, 0.1);
+            border-color: rgba(217, 119, 6, 0.2);
+        }
+
+        body.dark-mode .option-good {
+            background: rgba(5, 150, 105, 0.1);
+            border-color: rgba(5, 150, 105, 0.2);
+        }
+
+        body.dark-mode .option-easy {
+            background: rgba(37, 99, 235, 0.1);
+            border-color: rgba(37, 99, 235, 0.2);
+        }
+
         /* Animations */
         @keyframes fadeIn {
             from {
@@ -2122,7 +2229,7 @@
         }
 
         body.dark-mode .code-block-wrapper {
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.04);
         }
 
         .copy-code-btn {
@@ -2227,24 +2334,24 @@
         body.dark-mode .flashcard-back .flashcard-content::-webkit-scrollbar-thumb,
         body.dark-mode .modal-content::-webkit-scrollbar-thumb,
         body.dark-mode .fc-inline-edit::-webkit-scrollbar-thumb {
-            background: rgba(139, 92, 246, 0.3);
+            background: rgba(160, 140, 110, 0.3);
         }
 
         body.dark-mode .flashcard-front .flashcard-content::-webkit-scrollbar-thumb:hover,
         body.dark-mode .flashcard-back .flashcard-content::-webkit-scrollbar-thumb:hover,
         body.dark-mode .modal-content::-webkit-scrollbar-thumb:hover,
         body.dark-mode .fc-inline-edit::-webkit-scrollbar-thumb:hover {
-            background: rgba(139, 92, 246, 0.5);
+            background: rgba(160, 140, 110, 0.5);
         }
 
         body.dark-mode .flashcard-front pre::-webkit-scrollbar-thumb,
         body.dark-mode .flashcard-back pre::-webkit-scrollbar-thumb {
-            background: rgba(148, 163, 184, 0.2);
+            background: rgba(160, 140, 110, 0.2);
         }
 
         body.dark-mode .flashcard-front pre::-webkit-scrollbar-thumb:hover,
         body.dark-mode .flashcard-back pre::-webkit-scrollbar-thumb:hover {
-            background: rgba(148, 163, 184, 0.4);
+            background: rgba(160, 140, 110, 0.35);
         }
 
         /* Firefox scrollbar */
@@ -2266,12 +2373,12 @@
         body.dark-mode .flashcard-back .flashcard-content,
         body.dark-mode .modal-content,
         body.dark-mode .fc-inline-edit {
-            scrollbar-color: rgba(139, 92, 246, 0.3) transparent;
+            scrollbar-color: rgba(160, 140, 110, 0.3) transparent;
         }
 
         body.dark-mode .flashcard-front pre,
         body.dark-mode .flashcard-back pre {
-            scrollbar-color: rgba(148, 163, 184, 0.2) transparent;
+            scrollbar-color: rgba(160, 140, 110, 0.2) transparent;
         }
 
         /* CODE BLOCK SAFETY */
@@ -2506,9 +2613,9 @@
         }
 
         body.dark-mode .draft-badge {
-            background: rgba(245, 158, 11, 0.15);
-            border-color: rgba(245, 158, 11, 0.3);
-            color: #fbbf24;
+            background: rgba(245, 158, 11, 0.1);
+            border-color: rgba(245, 158, 11, 0.2);
+            color: #d4a030;
         }
 
         .draft-restore-banner {
@@ -2556,21 +2663,21 @@
         }
 
         body.dark-mode .draft-restore-banner {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05));
-            border-color: rgba(245, 158, 11, 0.25);
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(245, 158, 11, 0.03));
+            border-color: rgba(245, 158, 11, 0.18);
         }
 
         body.dark-mode .draft-restore-banner .draft-restore-info {
-            color: #fbbf24;
+            color: #d4a030;
         }
 
         body.dark-mode .draft-restore-banner .draft-discard-btn {
-            border-color: rgba(245, 158, 11, 0.4);
-            color: #fbbf24;
+            border-color: rgba(245, 158, 11, 0.3);
+            color: #d4a030;
         }
 
         body.dark-mode .draft-restore-banner .draft-discard-btn:hover {
-            background: rgba(245, 158, 11, 0.2);
+            background: rgba(245, 158, 11, 0.15);
         }
 
         @keyframes draftFadeIn {
