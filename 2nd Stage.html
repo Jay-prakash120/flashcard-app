@@ -92,14 +92,14 @@
         }
 
         body.dark-mode .topic-details {
-            background: #1c1917;
+            background: #221e1b;
             border-color: #3d3530;
         }
 
-        body.dark-mode .flashcard-face {
+        /* body.dark-mode .flashcard-face {
             background: #141210;
             border-color: #3a3428;
-        }
+        } */
 
         body.dark-mode .flashcard-front {
             background: #141210;
@@ -178,7 +178,7 @@
         body.dark-mode .review-modal .modal-content,
         body.dark-mode .flashcard-modal .modal-content,
         body.dark-mode .edit-modal .modal-content {
-            background: #1c1917;
+            background: #141210;
             border: 1px solid #2e2824;
         }
 
@@ -1305,7 +1305,6 @@
 
         .streak-count-wrapper {
             position: relative;
-            overflow: hidden;
             padding-left: 20px;
         }
 
@@ -1430,8 +1429,8 @@
         }
 
         body.dark-mode .streak-mini-stat {
-            background: rgba(245, 158, 11, 0.15);
-            color: #fbbf24;
+            background: rgb(65 41 0);
+            color: #ffb800;
         }
 
         .week-tracker {
@@ -1464,7 +1463,7 @@
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background: #e5e7eb;
+            background: #4a403d;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1474,13 +1473,14 @@
             border: 2px solid transparent;
         }
 
-        body.dark-mode .day-circle {
+        /* body.dark-mode .day-circle {
             background: #2e2824;
             color: #6b5f54;
-        }
+        } */
 
         .day-circle.active {
             background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+            background-origin: border-box;
             color: white;
             box-shadow: 0 4px 6px rgba(245, 158, 11, 0.3);
             transform: scale(1.1);
@@ -1732,7 +1732,7 @@
         }
 
         .difficulty-medium {
-            background: #fffbeb;
+            background: #1c1917;
             color: #d97706;
         }
 
@@ -1742,7 +1742,7 @@
         }
 
         .review-due {
-            border-left: 4px solid var(--warning) !important;
+            border-left: 4px solid #dc6d00 !important;
         }
 
         .review-due::before {
@@ -1754,8 +1754,8 @@
             display: inline-block;
             margin-left: 8px;
             font-size: 0.6rem;
-            background: var(--warning);
-            color: white;
+            background: #623305;
+            color: #ff8800;
             padding: 2px 6px;
             border-radius: 4px;
             vertical-align: middle;
@@ -2946,7 +2946,7 @@
                 <div id="review-topic-description"
                     style="white-space: pre-line; font-size: 1.1rem; color: var(--text-main);"></div>
                 <div class="topic-meta"
-                    style="justify-content: center; border-top: 1px solid #e5e7eb; margin-top: 20px;">
+                    style="justify-content: center; border-top: 1px solid #8f7564; margin-top: 20px;">
                     <span><i class="far fa-clock"></i> Last: <span id="review-last-date"></span></span>
                     <span><i class="fas fa-calendar-day"></i> Interval: <span
                             id="review-current-interval"></span></span>
@@ -5153,8 +5153,8 @@
             inputElement.value = '';
         }
         function copyCodeBlock(event, btn, encodedCode) {
+            console.log(encodedCode)
             if (event) event.stopPropagation();
-
             const rawCode = decodeURIComponent(encodedCode);
             navigator.clipboard.writeText(rawCode).then(() => {
                 const icon = btn.querySelector('i');
@@ -5205,9 +5205,8 @@
                 const escapedCode = code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
                 // Original code needs to be fully URL encoded to safely act as an HTML attribute argument
                 const encodedForAttr = encodeURIComponent(code);
-
                 return `<div class="code-block-wrapper">
-                            <button class="copy-code-btn" onclick="copyCodeBlock(event, this, '${encodedForAttr}')" title="Copy code">
+                            <button class="copy-code-btn" onclick="copyCodeBlock(event, this, '${encodedForAttr.replaceAll("'", "%27")}')" title="Copy code">
                                 <i class="far fa-copy"></i><span>Copy</span>
                             </button>
                             <pre><code>${escapedCode}</code></pre>
