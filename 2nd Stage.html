@@ -11,6 +11,10 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Highlight.js Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
     <style>
         :root {
@@ -54,8 +58,8 @@
         body.dark-mode .topic-item,
         body.dark-mode .empty-state,
         body.dark-mode .modal-content,
-        body.dark-mode .flashcard-front,
-        body.dark-mode .review-option {
+        body.dark-mode .flashcard-front {
+            /* body.dark-mode .review-option { */
             background-color: var(--bg-card);
             border-color: #2e2824;
         }
@@ -326,7 +330,7 @@
         }
 
         .recovery-content:hover {
-            color: var(--primary-light);
+            color: #d4d4d4;
         }
 
         .recovery-close {
@@ -1727,17 +1731,17 @@
         }
 
         .difficulty-easy {
-            background: #ecfdf5;
+            /* background: #ecfdf5; */
             color: #059669;
         }
 
         .difficulty-medium {
-            background: #1c1917;
+            /* background: #1c1917; */
             color: #d97706;
         }
 
         .difficulty-hard {
-            background: #fef2f2;
+            /* background: #fef2f2; */
             color: #dc2626;
         }
 
@@ -2037,26 +2041,6 @@
             font-weight: bold;
         }
 
-        .option-again.active-option {
-            background: #dc2626;
-            color: white;
-        }
-
-        .option-hard.active-option {
-            background: #d97706;
-            color: white;
-        }
-
-        .option-good.active-option {
-            background: #059669;
-            color: white;
-        }
-
-        .option-easy.active-option {
-            background: #2563eb;
-            color: white;
-        }
-
         /* Dark mode review options */
         body.dark-mode .option-again {
             background: rgba(220, 38, 38, 0.1);
@@ -2127,6 +2111,26 @@
                 transform: translateY(-100vh) rotate(720deg);
                 opacity: 0;
             }
+        }
+
+        body.dark-mode .option-again.active-option {
+            background: #dc2626;
+            color: white;
+        }
+
+        body.dark-mode .option-hard.active-option {
+            background: #d97706;
+            color: white;
+        }
+
+        body.dark-mode .option-good.active-option {
+            background: #059669;
+            color: white;
+        }
+
+        body.dark-mode .option-easy.active-option {
+            background: #2563eb;
+            color: white;
         }
 
         .confetti-piece {
@@ -2705,6 +2709,10 @@
             100% {
                 transform: scale(1);
             }
+        }
+
+        #recovery-toast-msg {
+            width: 221px;
         }
     </style>
 </head>
@@ -5180,9 +5188,9 @@
             if (!raw) return "";
 
             let codeBlocks = [];
-            // 1. Extract raw code blocks to prevent HTML escaping them
-            let processed = raw.replace(/```([\s\S]*?)```/g, (match, code) => {
-                codeBlocks.push(code.trim());
+            // 1. Extract raw code blocks to prevent HTML escaping them (Now parsing language)
+            let processed = raw.replace(/```([a-z0-9_+\-]*)\n?([\s\S]*?)```/gi, (match, lang, code) => {
+                codeBlocks.push({lang: lang.trim(), code: code.trim()});
                 return `%%%CODEBLOCK_${codeBlocks.length - 1}%%%`;
             });
 
@@ -5200,16 +5208,37 @@
 
             // 5. Re-inject the formatted code blocks with the beautiful copy button
             safe = safe.replace(/%%%CODEBLOCK_(\d+)%%%/g, (match, index) => {
-                const code = codeBlocks[index];
-                // Display code needs to be cleanly escaped
-                const escapedCode = code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                let block = codeBlocks[index];
+                let lang=block.lang;
+                let code=block.code;
+                if(!(lang == 'py' || lang == 'python' || lang == 'js' || lang == 'javascript' || lang == 'html' || lang == 'css' || lang == 'java' || lang == 'cpp' || lang == 'c' || lang == 'ts' || lang == 'jsx' || lang == 'tsx' || lang == 'bin' || lang == 'lua' || lang == 'sql' || lang=='react'))
+                    code = lang + code; lang = '';
+
+                let highlightedCode;
+                try {
+                    // Try to highlight using Highlight.js
+                    if (lang && hljs.getLanguage(lang)) {
+                        highlightedCode = hljs.highlight(code, { language: lang }).value;
+                    } 
+                    else if (lang === 'plaintext') {
+                        highlightedCode = code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                    }
+                     else {
+                        // Auto-detect if language is unknown
+                        highlightedCode = hljs.highlightAuto(code).value;
+                    }
+                } catch (e) {
+                    // Fallback to basic escaping
+                    highlightedCode = code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                }
+                
                 // Original code needs to be fully URL encoded to safely act as an HTML attribute argument
                 const encodedForAttr = encodeURIComponent(code);
                 return `<div class="code-block-wrapper">
                             <button class="copy-code-btn" onclick="copyCodeBlock(event, this, '${encodedForAttr.replaceAll("'", "%27")}')" title="Copy code">
                                 <i class="far fa-copy"></i><span>Copy</span>
                             </button>
-                            <pre><code>${escapedCode}</code></pre>
+                            <pre><code class="hljs language-${lang} " style="padding: 0px; background-color: transparent">${highlightedCode}</code></pre>
                         </div>`;
             });
 
