@@ -11,9 +11,10 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- Highlight.js Syntax Highlighting -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
     <style>
@@ -612,8 +613,8 @@
 
         /* Dark mode: white selection, black text */
         body.dark-mode ::selection {
-            background: #ffffff;
-            color: #000000;
+            background: #333333;
+            color: #a6a6a6;
         }
 
         body.dark-mode ::-moz-selection {
@@ -1583,6 +1584,56 @@
             box-shadow: var(--shadow-lg);
         }
 
+        /* --- KEYBOARD NAVIGATION SELECTION --- */
+        .topic-item.kb-selected {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.35), var(--shadow-lg);
+            transform: translateY(-4px) scale(1.015);
+            z-index: 5;
+        }
+
+        .topic-item.kb-selected::before {
+            background: var(--primary);
+            width: 5px;
+        }
+
+        body.dark-mode .topic-item.kb-selected {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25), 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Subtle hint badge on selected card */
+        .topic-item.kb-selected::after {
+            content: 'Press R';
+            position: absolute;
+            bottom: 8px;
+            right: 10px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--primary);
+            background: var(--primary-light);
+            padding: 2px 8px;
+            border-radius: 6px;
+            opacity: 0.8;
+            pointer-events: none;
+            animation: kbHintFadeIn 0.3s ease;
+            z-index: 6;
+        }
+
+        body.dark-mode .topic-item.kb-selected::after {
+            background: rgba(99, 102, 241, 0.15);
+            color: #a5b4fc;
+        }
+
+        @keyframes kbHintFadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 0.8; transform: translateY(0); }
+        }
+
         .topic-header {
             display: flex;
             justify-content: space-between;
@@ -1904,7 +1955,7 @@
 
         .flashcard-label {
             position: absolute;
-            top: 20px;
+            top: 6px;
             font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -1955,6 +2006,27 @@
             background: var(--primary-light);
             color: var(--primary);
             border-color: var(--primary-light);
+        }
+
+        @keyframes controlBtnClick {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(0.85);
+                background: var(--primary);
+                color: white;
+                border-color: var(--primary);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .btn-click-anim {
+            animation: controlBtnClick 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* Review Specifics */
@@ -2157,6 +2229,48 @@
             max-height: 100%;
             padding: 10px;
             white-space: normal;
+        }
+
+        /* --- CLICKABLE LINK BLOCK (```link / ```url) --- */
+        .fc-link-block {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(139, 92, 246, 0.08));
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            font-size: 0.92rem;
+            font-weight: 600;
+            text-decoration: none;
+            margin: 8px 0;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            word-break: break-all;
+        }
+
+        .fc-link-block:hover {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.18), rgba(139, 92, 246, 0.18));
+            border-color: var(--primary);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+        }
+
+        .fc-link-block i {
+            font-size: 0.75em;
+            opacity: 0.7;
+        }
+
+        body.dark-mode .fc-link-block {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(139, 92, 246, 0.12));
+            border-color: rgba(99, 102, 241, 0.25);
+            color: #a5b4fc;
+        }
+
+        body.dark-mode .fc-link-block:hover {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.22), rgba(139, 92, 246, 0.22));
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
         }
 
         /* Code block styling */
@@ -3264,6 +3378,121 @@
                         reviewModal.style.display = 'none';
                         return;
                     }
+
+                    // 5. Clear keyboard topic selection
+                    if (kbSelectedIndex >= 0) {
+                        e.preventDefault();
+                        clearKbSelection();
+                        return;
+                    }
+                }
+
+                const activeEl = document.activeElement;
+                const isInput = activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.isContentEditable;
+
+                // --- 'a' or 'n' key: scroll to top and focus Topic Title ---
+                if ((e.key.toLowerCase() === 'a' || e.key.toLowerCase() === 'n') && !e.ctrlKey && !e.metaKey && !isInput) {
+                    const isAnyModalOpen = (flashcardModal && flashcardModal.style.display === 'flex') ||
+                        (reviewModal && reviewModal.style.display === 'flex') ||
+                        (editModal && editModal.style.display === 'flex');
+                    if (!isAnyModalOpen) {
+                        e.preventDefault();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        const titleInput = document.getElementById('topic-title');
+                        if (titleInput) {
+                            titleInput.focus({ preventScroll: true });
+                        }
+                        return;
+                    }
+                }
+
+                // Go To top by pressing `t`
+                if (e.key.toLowerCase() === 't' && !e.ctrlKey && !e.metaKey && !isInput) {
+                    const isAnyModalOpen = (flashcardModal && flashcardModal.style.display === 'flex') ||
+                        (reviewModal && reviewModal.style.display === 'flex') ||
+                        (editModal && editModal.style.display === 'flex');
+                    if (!isAnyModalOpen) {
+                        e.preventDefault();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        return;
+                    }
+                }
+
+                // Go To bottom by pressing `b` 
+                if (e.key.toLowerCase() === 'b' && !e.ctrlKey && !e.metaKey && !isInput) {
+                    const isAnyModalOpen = (flashcardModal && flashcardModal.style.display === 'flex') ||
+                        (reviewModal && reviewModal.style.display === 'flex') ||
+                        (editModal && editModal.style.display === 'flex');
+                    if (!isAnyModalOpen) {
+                        e.preventDefault();
+                        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                        return;
+                    }
+                }
+
+                // --- Open cards when text is selected and 'r' is pressed ---
+                if (e.key.toLowerCase() === 'r' && !e.ctrlKey && !e.metaKey && !isInput) {
+                    const isAnyModalOpen = (flashcardModal && flashcardModal.style.display === 'flex') ||
+                        (reviewModal && reviewModal.style.display === 'flex') ||
+                        (editModal && editModal.style.display === 'flex');
+                    if (!isAnyModalOpen) {
+                        // 1. Try text selection first
+                        const selection = window.getSelection();
+                        if (selection.toString().trim().length > 0) {
+                            let node = selection.anchorNode;
+                            if (node) {
+                                if (node.nodeType === 3) node = node.parentElement;
+                                const topicItem = node.closest('.topic-item');
+                                if (topicItem) {
+                                    const topicId = topicItem.getAttribute('data-topic-id');
+                                    if (topicId) {
+                                        e.preventDefault();
+                                        const topicObj = topics.find(t => t.id === topicId);
+                                        if (topicObj && topicObj.flashcards && topicObj.flashcards.length > 0) {
+                                            openFlashcardMode(topicId);
+                                        } else {
+                                            startReview(topicId);
+                                        }
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+
+                        // 2. Try keyboard-selected topic
+                        if (kbSelectedIndex >= 0) {
+                            const topicCards = topicsList.querySelectorAll('.topic-item');
+                            if (topicCards[kbSelectedIndex]) {
+                                const topicId = topicCards[kbSelectedIndex].getAttribute('data-topic-id');
+                                if (topicId) {
+                                    e.preventDefault();
+                                    const topicObj = topics.find(t => t.id === topicId);
+                                    if (topicObj && topicObj.flashcards && topicObj.flashcards.length > 0) {
+                                        openFlashcardMode(topicId);
+                                    } else {
+                                        startReview(topicId);
+                                    }
+                                    clearKbSelection();
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // --- Arrow key topic grid navigation (home page) ---
+                if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key) && !e.ctrlKey && !e.metaKey && !isInput) {
+                    const isAnyModalOpen = (flashcardModal && flashcardModal.style.display === 'flex') ||
+                        (reviewModal && reviewModal.style.display === 'flex') ||
+                        (editModal && editModal.style.display === 'flex');
+                    if (!isAnyModalOpen) {
+                        const topicCards = topicsList.querySelectorAll('.topic-item');
+                        if (topicCards.length > 0) {
+                            e.preventDefault();
+                            navigateTopicGrid(e.key, topicCards);
+                            return;
+                        }
+                    }
                 }
 
                 if (e.ctrlKey || e.metaKey) {
@@ -3337,7 +3566,7 @@
                         }
                     }
 
-                    // --- Ctrl + E (Edit individual flashcard) ---
+                    // --- Ctrl + E (Edit individual flashcard / edit from review window) ---
                     if (e.key.toLowerCase() === 'e' && !e.shiftKey) {
                         if (flashcardModal && flashcardModal.style.display === 'flex') {
                             const inlineEdit = document.getElementById('fc-inline-edit');
@@ -3345,6 +3574,22 @@
                                 e.preventDefault();
                                 startInlineEdit();
                             }
+                            return;
+                        }
+
+                        if (reviewModal && reviewModal.style.display === 'flex' && currentReviewTopic) {
+                            e.preventDefault();
+                            reviewModal.style.display = 'none';
+                            openEditModal(currentReviewTopic.id);
+                            setTimeout(() => {
+                                const descInput = document.getElementById('edit-topic-description');
+                                if (descInput) {
+                                    descInput.focus();
+                                    const val = descInput.value;
+                                    descInput.value = '';
+                                    descInput.value = val;
+                                }
+                            }, 50);
                             return;
                         }
                     }
@@ -3387,6 +3632,55 @@
                             document.getElementById('active-flashcard').classList.toggle('flipped');
                             return;
                         }
+
+                        // Up/Down arrows → scroll flashcard content
+                        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                            e.preventDefault();
+                            const activeCard = document.getElementById('active-flashcard');
+                            if (activeCard) {
+                                const isFlipped = activeCard.classList.contains('flipped');
+                                const faceSelector = isFlipped ? '.flashcard-back .flashcard-content' : '.flashcard-front .flashcard-content';
+                                const content = activeCard.querySelector(faceSelector);
+                                if (content) {
+                                    content.scrollTop += (e.key === 'ArrowDown' ? 40 : -40);
+                                }
+                            }
+                            return;
+                        }
+
+                        // 'r' key → open review modal
+                        if (e.key.toLowerCase() === 'r') {
+                            e.preventDefault();
+                            flashcardModal.style.display = 'none';
+                            startReview(currentFlashcardTopicId);
+                            return;
+                        }
+                    }
+                }
+
+                // --- Review modal shortcuts (no modifier keys) ---
+                if (reviewModal && reviewModal.style.display === 'flex') {
+                    // Up/Down arrows → scroll review modal
+                    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        const modalContent = reviewModal.querySelector('.modal-content');
+                        if (modalContent) {
+                            modalContent.scrollTop += (e.key === 'ArrowDown' ? 40 : -40);
+                        }
+                        return;
+                    }
+
+                    if (['1', '2', '3', '4'].includes(e.key)) {
+                        e.preventDefault();
+                        const option = document.querySelector(`.review-option[data-rating="${e.key}"]`);
+                        if (option) option.click();
+                        return;
+                    }
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        const submitBtn = document.getElementById('submit-review');
+                        if (submitBtn) submitBtn.click();
+                        return;
                     }
                 }
             });
@@ -4373,8 +4667,8 @@
                 <span></span><span></span>
             </div>
             <div class="fc-reorder-btns">
-                <button type="button" class="fc-reorder-btn fc-move-up" title="Move up"><i class="fas fa-chevron-up"></i></button>
-                <button type="button" class="fc-reorder-btn fc-move-down" title="Move down"><i class="fas fa-chevron-down"></i></button>
+                <button type="button" class="fc-reorder-btn fc-move-up" title="Move up" tabindex="-1"><i class="fas fa-chevron-up"></i></button>
+                <button type="button" class="fc-reorder-btn fc-move-down" title="Move down" tabindex="-1"><i class="fas fa-chevron-down"></i></button>
             </div>
         </div>
         <span class="fc-card-number">#1</span>
@@ -4517,6 +4811,7 @@
         }
 
         function openFlashcardMode(topicId) {
+            window.getSelection().removeAllRanges();
             const topic = topics.find(t => t.id === topicId);
             if (!topic || !topic.flashcards || topic.flashcards.length === 0) {
                 alert("No flashcards added for this topic yet. Edit the topic to add some!");
@@ -4544,6 +4839,12 @@
             // Always exit inline edit mode when navigating
             cancelInlineEdit();
 
+            // Update button visibility
+            const prevBtn = document.getElementById('fc-prev');
+            const nextBtn = document.getElementById('fc-next');
+            if (prevBtn) prevBtn.style.visibility = currentCardIndex === 0 ? 'hidden' : 'visible';
+            if (nextBtn) nextBtn.style.visibility = currentCardIndex === currentFlashcardSet.length - 1 ? 'hidden' : 'visible';
+
             setTimeout(() => {
                 document.getElementById('fc-front-text').innerHTML = renderQuestion(card.front);
                 document.getElementById('fc-back-text').innerHTML = renderQuestion(card.back);
@@ -4555,6 +4856,13 @@
 
         function nextCard() {
             if (currentCardIndex < currentFlashcardSet.length - 1) {
+                const btn = document.getElementById('fc-next');
+                if (btn) {
+                    btn.classList.remove('btn-click-anim');
+                    void btn.offsetWidth;
+                    btn.classList.add('btn-click-anim');
+                }
+
                 document.getElementById('active-flashcard').classList.remove('flipped');
                 setTimeout(() => {
                     currentCardIndex++;
@@ -4565,6 +4873,13 @@
 
         function prevCard() {
             if (currentCardIndex > 0) {
+                const btn = document.getElementById('fc-prev');
+                if (btn) {
+                    btn.classList.remove('btn-click-anim');
+                    void btn.offsetWidth;
+                    btn.classList.add('btn-click-anim');
+                }
+
                 document.getElementById('active-flashcard').classList.remove('flipped');
                 setTimeout(() => {
                     currentCardIndex--;
@@ -4888,6 +5203,7 @@
 
                 const topicElement = document.createElement('div');
                 topicElement.className = `topic-item ${dueForReview ? 'review-due' : ''}`;
+                topicElement.setAttribute('data-topic-id', topic.id);
 
                 topicElement.innerHTML = `
                     <div class="topic-header">
@@ -4900,7 +5216,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="topic-description">${topic.description || 'No notes added.'}</div>
+                    <div class="topic-description">${topic.description ? renderQuestion(topic.description) : 'No notes added.'}</div>
                     
                     <div class="topic-progress-wrapper">
                         <div class="topic-progress-label"><span>Mastery</span><span>${Math.round(progressPercent)}%</span></div>
@@ -4941,10 +5257,11 @@
         }
 
         function startReview(topicId) {
+            window.getSelection().removeAllRanges();
             currentReviewTopic = topics.find(topic => topic.id === topicId);
             if (currentReviewTopic) {
                 document.getElementById('review-topic-title').textContent = currentReviewTopic.title;
-                document.getElementById('review-topic-description').textContent = currentReviewTopic.description || 'No description provided';
+                document.getElementById('review-topic-description').innerHTML = currentReviewTopic.description ? renderQuestion(currentReviewTopic.description) : 'No description provided';
 
                 const lastReviewed = currentReviewTopic.lastReviewed ?
                     new Date(currentReviewTopic.lastReviewed).toLocaleDateString() :
@@ -5190,7 +5507,66 @@
             let codeBlocks = [];
             // 1. Extract raw code blocks to prevent HTML escaping them (Now parsing language)
             let processed = raw.replace(/```([a-z0-9_+\-]*)\n?([\s\S]*?)```/gi, (match, lang, code) => {
-                codeBlocks.push({lang: lang.trim(), code: code.trim()});
+                if (lang.trim().toLowerCase() === 'li') {
+                    let listHtml = '<div class="fc-custom-list" style="text-align: left; background: rgba(148, 163, 184, 0.08); border: 1px solid rgba(148, 163, 184, 0.2); border-radius: 12px; padding: 15px 20px; margin: 12px 0;">';
+                    let lines = code.trim().split('\n');
+                    let currentListType = null;
+                    let isFirst = true;
+
+                    for (let line of lines) {
+                        line = line.trim();
+                        if (!line) continue;
+
+                        let isHeader = line.endsWith(':');
+                        let isBullet = /^[-*+]\s+/.test(line);
+
+                        let content = line.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/`([^`]+?)`/g, '<code class="inline-code">$1</code>');
+
+                        if (!isHeader) {
+                            content = content.replace(/^(?:[0-9]+\.|[-*+])\s+/, '');
+                        }
+
+                        if (isHeader) {
+                            if (currentListType) {
+                                listHtml += `</${currentListType}>`;
+                                currentListType = null;
+                            }
+                            let mt = isFirst ? '0' : '12px';
+                            listHtml += `<div style="font-weight: 600; color: var(--primary); margin-bottom: 8px; margin-top: ${mt}; font-size: 1.05em; border-bottom: 1px solid rgba(148, 163, 184, 0.2); padding-bottom: 4px;">${content.replace(":", "")}</div>`;
+                        } else {
+                            if (!currentListType) {
+                                currentListType = isBullet ? 'ul' : 'ol';
+                                listHtml += `<${currentListType} style="margin: 5px 0 10px; padding-left: 20px; color: var(--text-main); font-size: 0.95em;">`;
+                            }
+                            listHtml += `<li style="margin-bottom: 5px;">${content}</li>`;
+                        }
+                        isFirst = false;
+                    }
+                    if (currentListType) {
+                        listHtml += `</${currentListType}>`;
+                    }
+                    listHtml += '</div>';
+
+                    codeBlocks.push({ lang: 'html_raw', code: listHtml });
+                    return `%%%CODEBLOCK_${codeBlocks.length - 1}%%%`;
+                }
+
+                // --- ```link or ```url — Clickable hyperlink ---
+                if (lang.trim().toLowerCase() === 'link' || lang.trim().toLowerCase() === 'url') {
+                    const parts = code.trim().split(/[\s\n]+/);
+                    const href = (parts[0] || '').trim();
+                    const text = parts.slice(1).join(' ').trim() || href;
+
+                    const safeHref = href.replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+                    const safeText = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+                    const linkHtml = `<a href="${safeHref}" target="_blank" rel="noopener noreferrer" class="fc-link-block" onclick="event.stopPropagation()"><i class="fas fa-external-link-alt"></i> ${safeText}</a>`;
+
+                    codeBlocks.push({ lang: 'html_raw', code: linkHtml });
+                    return `%%%CODEBLOCK_${codeBlocks.length - 1}%%%`;
+                }
+
+                codeBlocks.push({ lang: lang.trim(), code: code.trim() });
                 return `%%%CODEBLOCK_${codeBlocks.length - 1}%%%`;
             });
 
@@ -5209,21 +5585,59 @@
             // 5. Re-inject the formatted code blocks with the beautiful copy button
             safe = safe.replace(/%%%CODEBLOCK_(\d+)%%%/g, (match, index) => {
                 let block = codeBlocks[index];
-                let lang=block.lang;
-                let code=block.code;
-                if(!(lang == 'py' || lang == 'python' || lang == 'js' || lang == 'javascript' || lang == 'html' || lang == 'css' || lang == 'java' || lang == 'cpp' || lang == 'c' || lang == 'ts' || lang == 'jsx' || lang == 'tsx' || lang == 'bin' || lang == 'lua' || lang == 'sql' || lang=='react'))
-                    code = lang + code; lang = '';
+                let lang = block.lang;
+                let code = block.code;
+
+                if (lang === 'html_raw') return code;
+                const LangList = new Set([
+                    'py', 'python',
+                    'js', 'javascript',
+                    'ts', 'typescript',
+                    'jsx', 'tsx',
+                    'html', 'css',
+                    'java',
+                    'c', 'cpp', 'cxx',
+                    'cs',          // C#
+                    'go', 'golang',
+                    'rs', 'rust',
+                    'php',
+                    'rb', 'ruby',
+                    'swift',
+                    'kt', 'kotlin',
+                    'scala',
+                    'r',
+                    'matlab',
+                    'perl',
+                    'sh', 'bash',
+                    'powershell',
+                    'lua',
+                    'sql',
+                    'xml',
+                    'json',
+                    'yaml', 'yml',
+                    'md', 'markdown',
+                    'plaintext',
+                    'dockerfile',
+                    'react',
+                    'vue',
+                    'svelte',
+                    'angular',
+                    'bin'
+                ]);
+                let symbolList = ['.', ',', ';', ':', '{', '}', '[', ']', '(', ')', '<', '>', '/', '\\', '|', '&', '^', '%', '$', '#', '@', '!', '~', '`', '+', '-', '*', '?']
+                if (!LangList.has(lang?.toLowerCase()))
+                    !symbolList.includes(code[0]) ? code = lang + ' ' + code : code = lang + code
 
                 let highlightedCode;
                 try {
                     // Try to highlight using Highlight.js
                     if (lang && hljs.getLanguage(lang)) {
                         highlightedCode = hljs.highlight(code, { language: lang }).value;
-                    } 
+                    }
                     else if (lang === 'plaintext') {
                         highlightedCode = code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
                     }
-                     else {
+                    else {
                         // Auto-detect if language is unknown
                         highlightedCode = hljs.highlightAuto(code).value;
                     }
@@ -5231,7 +5645,7 @@
                     // Fallback to basic escaping
                     highlightedCode = code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
                 }
-                
+
                 // Original code needs to be fully URL encoded to safely act as an HTML attribute argument
                 const encodedForAttr = encodeURIComponent(code);
                 return `<div class="code-block-wrapper">
@@ -5244,6 +5658,86 @@
 
             return safe;
         }
+        // --- KEYBOARD TOPIC GRID NAVIGATION ---
+        let kbSelectedIndex = -1;
+
+        function navigateTopicGrid(key, topicCards) {
+            const count = topicCards.length;
+            if (count === 0) return;
+
+            // Calculate columns from the grid layout
+            const cols = getGridColumns(topicCards);
+
+            let newIndex = kbSelectedIndex;
+
+            if (kbSelectedIndex < 0) {
+                // Nothing selected yet — first press selects first card
+                newIndex = 0;
+            } else {
+                switch (key) {
+                    case 'ArrowRight':
+                        newIndex = Math.min(kbSelectedIndex + 1, count - 1);
+                        break;
+                    case 'ArrowLeft':
+                        newIndex = Math.max(kbSelectedIndex - 1, 0);
+                        break;
+                    case 'ArrowDown':
+                        newIndex = Math.min(kbSelectedIndex + cols, count - 1);
+                        break;
+                    case 'ArrowUp':
+                        newIndex = Math.max(kbSelectedIndex - cols, 0);
+                        break;
+                }
+            }
+
+            setKbSelection(newIndex, topicCards);
+        }
+
+        function getGridColumns(topicCards) {
+            if (topicCards.length < 2) return 1;
+            // Use offsetTop instead of getBoundingClientRect().top
+            // because transforms (translateY on selected card) shift the
+            // visual rect but NOT offsetTop, avoiding mis-detection.
+            const firstTop = topicCards[0].offsetTop;
+            let cols = 1;
+            for (let i = 1; i < topicCards.length; i++) {
+                if (Math.abs(topicCards[i].offsetTop - firstTop) < 5) {
+                    cols++;
+                } else {
+                    break;
+                }
+            }
+            return cols;
+        }
+
+        function setKbSelection(index, topicCards) {
+            if (!topicCards) topicCards = topicsList.querySelectorAll('.topic-item');
+
+            // Clear previous
+            topicCards.forEach(c => c.classList.remove('kb-selected'));
+
+            kbSelectedIndex = index;
+            if (index >= 0 && index < topicCards.length) {
+                topicCards[index].classList.add('kb-selected');
+                topicCards[index].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        function clearKbSelection() {
+            kbSelectedIndex = -1;
+            document.querySelectorAll('.topic-item.kb-selected').forEach(c => c.classList.remove('kb-selected'));
+        }
+
+        // Clear selection when user clicks anywhere or focuses an input
+        document.addEventListener('mousedown', () => {
+            if (kbSelectedIndex >= 0) clearKbSelection();
+        });
+        document.addEventListener('focusin', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
+                clearKbSelection();
+            }
+        });
+
         // --- SCROLL TO TOP ------------------
         (function () {
             const btn = document.getElementById('scroll-to-top');
