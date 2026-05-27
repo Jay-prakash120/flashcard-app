@@ -1605,7 +1605,7 @@
 
         /* Subtle hint badge on selected card */
         .topic-item.kb-selected::after {
-            content: 'Press R';
+            content: 'Press Enter';
             position: absolute;
             bottom: 8px;
             right: 10px;
@@ -1844,7 +1844,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(31, 41, 55, 0.6);
+            background: rgb(20 18 16 / 70%);
             backdrop-filter: blur(4px);
             z-index: 1000;
             align-items: center;
@@ -1887,7 +1887,185 @@
             height: 400px;
             margin: 20px 0;
             cursor: pointer;
+            position: relative;
         }
+
+        /* overflow:hidden only during animation — the edit button (top:-55px) needs to be visible otherwise */
+        .flashcard-stage.edit-anim {
+            overflow: hidden;
+        }
+
+        /* ============================================================
+           EDIT MODE ANIMATIONS — 4 Options (uncomment ONE at a time)
+           ============================================================
+           To switch: comment out the active option's ::after + @keyframes,
+           then uncomment the one you want to try.
+        */
+
+        /* ── OPTION 1: SHIMMER SWEEP (Active ✅) ──────────────────────
+           A bright light beam sweeps across the card left→right once.
+           Like a credit card shine effect. Subtle and premium. */
+        @keyframes editShimmerSweep {
+            0% {
+                transform: translateX(-100%);
+                opacity: 1;
+            }
+            60% {
+                transform: translateX(100%);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        .flashcard-stage.edit-anim::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                105deg,
+                transparent 30%,
+                rgba(99, 102, 241, 0.12) 45%,
+                rgba(139, 92, 246, 0.2) 50%,
+                rgba(99, 102, 241, 0.12) 55%,
+                transparent 70%
+            );
+            border-radius: 20px;
+            z-index: 15;
+            pointer-events: none;
+            animation: editShimmerSweep 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        /* ── OPTION 2: BORDER GLOW SWEEP ──────────────────────────────
+           The card's border lights up with a gradient that travels
+           around the edges. Modern neon-frame activation effect.
+           */
+        /*To use: comment out Option 1 above, uncomment below.
+        */
+      /*  @keyframes editBorderGlow {
+            0% {
+                clip-path: inset(0 100% 0 0);
+                opacity: 1;
+            }
+            50% {
+                clip-path: inset(0 0 0 0);
+                opacity: 1;
+            }
+            80% {
+                clip-path: inset(0 0 0 0);
+                opacity: 1;
+            }
+            100% {
+                clip-path: inset(0 0 0 0);
+                opacity: 0;
+            }
+        }
+
+        .flashcard-stage.edit-anim::after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6, #a855f7, #6366f1);
+            border-radius: 22px;
+            z-index: -1;
+            pointer-events: none;
+            animation: editBorderGlow 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4), 0 0 40px rgba(139, 92, 246, 0.2);
+        } */
+
+        /* ── OPTION 3: FULL CARD GRADIENT FLASH ───────────────────────
+           A semi-transparent gradient overlay sweeps across the whole
+           card once, then disappears. Like a "power-on" effect.
+           To use: comment out Option 1 above, uncomment below.
+        */
+        
+       /* @keyframes editGradientFlash {
+            0% {
+                background-position: -200% center;
+                opacity: 0.8;
+            }
+            60% {
+                background-position: 200% center;
+                opacity: 0.8;
+            }
+            100% {
+                background-position: 200% center;
+                opacity: 0;
+            }
+        }
+
+        .flashcard-stage.edit-anim::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(99, 102, 241, 0.15) 20%,
+                rgba(139, 92, 246, 0.25) 40%,
+                rgba(168, 85, 247, 0.25) 60%,
+                rgba(99, 102, 241, 0.15) 80%,
+                transparent 100%
+            );
+            background-size: 200% 100%;
+            border-radius: 20px;
+            z-index: 15;
+            pointer-events: none;
+            animation: editGradientFlash 1s ease-in-out forwards;
+        }
+        */
+
+        /* ── OPTION 4: GRADIENT PULSE ─────────────────────────────────
+           The card briefly pulses with a color wash (indigo → purple
+           → fades away). Quick 0.6s "activated" signal.
+           To use: comment out Option 1 above, uncomment below.
+        */
+        /*
+        @keyframes editGradientPulse {
+            0% {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            30% {
+                opacity: 0.35;
+                transform: scale(1);
+            }
+            60% {
+                opacity: 0.2;
+                transform: scale(1.02);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1);
+            }
+        }
+
+        .flashcard-stage.edit-anim::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.4) 0%, rgba(139, 92, 246, 0.3) 40%, transparent 70%);
+            border-radius: 20px;
+            z-index: 15;
+            pointer-events: none;
+            animation: editGradientPulse 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        */
+        /* ----------------- End of Edit Animations -------------------- */
 
         .flashcard {
             width: 100%;
@@ -2395,6 +2573,7 @@
             overflow-y: auto;
             overflow-x: hidden;
             padding-right: 6px;
+            padding-bottom: 20px;
         }
 
         /* --- CUSTOM SCROLLBAR (Desktop) --- */
@@ -2644,6 +2823,7 @@
             pointer-events: none;
             transition: all 0.3s ease;
         }
+
 
         /* --- SCROLL TO TOP BUTTON --- */
         .scroll-to-top {
@@ -3369,6 +3549,7 @@
                     if (flashcardModal && flashcardModal.style.display === 'flex') {
                         e.preventDefault();
                         flashcardModal.style.display = 'none';
+                        restoreKbSelection();
                         return;
                     }
 
@@ -3376,6 +3557,7 @@
                     if (reviewModal && reviewModal.style.display === 'flex') {
                         e.preventDefault();
                         reviewModal.style.display = 'none';
+                        restoreKbSelection();
                         return;
                     }
 
@@ -3431,7 +3613,7 @@
                 }
 
                 // --- Open cards when text is selected and 'r' is pressed ---
-                if (e.key.toLowerCase() === 'r' && !e.ctrlKey && !e.metaKey && !isInput) {
+                if (e.key === "Enter" && !e.ctrlKey && !e.metaKey && !isInput) {
                     const isAnyModalOpen = (flashcardModal && flashcardModal.style.display === 'flex') ||
                         (reviewModal && reviewModal.style.display === 'flex') ||
                         (editModal && editModal.style.display === 'flex');
@@ -3466,6 +3648,7 @@
                                 const topicId = topicCards[kbSelectedIndex].getAttribute('data-topic-id');
                                 if (topicId) {
                                     e.preventDefault();
+                                    kbLastSelectedIndex = kbSelectedIndex; // remember position number for restore
                                     const topicObj = topics.find(t => t.id === topicId);
                                     if (topicObj && topicObj.flashcards && topicObj.flashcards.length > 0) {
                                         openFlashcardMode(topicId);
@@ -3649,7 +3832,7 @@
                         }
 
                         // 'r' key → open review modal
-                        if (e.key.toLowerCase() === 'r') {
+                        if (e.key.toLowerCase() === 'r' && !e.ctrlKey) {
                             e.preventDefault();
                             flashcardModal.style.display = 'none';
                             startReview(currentFlashcardTopicId);
@@ -3686,7 +3869,7 @@
             });
 
             // Modal Closers
-            document.getElementById('close-review-modal').onclick = () => reviewModal.style.display = 'none';
+            document.getElementById('close-review-modal').onclick = () => { reviewModal.style.display = 'none'; restoreKbSelection(); };
 
             document.getElementById('close-edit-modal').onclick = () => {
                 editModal.style.display = 'none';
@@ -3697,6 +3880,7 @@
 
             document.getElementById('close-flashcard-modal').onclick = () => {
                 flashcardModal.style.display = 'none';
+                restoreKbSelection();
                 if (document.getElementById('fc-inline-edit').classList.contains('active')) {
                     showRecoveryToast("Get back to editing flashcard", () => {
                         flashcardModal.style.display = 'flex';
@@ -3722,6 +3906,7 @@
                     renderTopics();
                     updateStatistics();
                     updateStreak();
+                    restoreKbSelection();
                 } else {
                     alert('Please select how well you remembered the topic');
                 }
@@ -3747,7 +3932,7 @@
 
             // Close modals on outside click
             window.addEventListener('click', function (e) {
-                if (e.target === reviewModal) reviewModal.style.display = 'none';
+                if (e.target === reviewModal) { reviewModal.style.display = 'none'; restoreKbSelection(); }
                 if (e.target === editModal) {
                     editModal.style.display = 'none';
                     showRecoveryToast("Get back to editing topic", () => {
@@ -3756,6 +3941,7 @@
                 }
                 if (e.target === flashcardModal) {
                     flashcardModal.style.display = 'none';
+                    restoreKbSelection();
                     if (document.getElementById('fc-inline-edit').classList.contains('active')) {
                         showRecoveryToast("Get back to editing flashcard", () => {
                             flashcardModal.style.display = 'flex';
@@ -4824,7 +5010,6 @@
 
             document.getElementById('fc-modal-title').textContent = topic.title;
             updateFlashcardUI();
-
             document.getElementById('active-flashcard').classList.remove('flipped');
 
             flashcardModal.style.display = 'flex';
@@ -4934,6 +5119,12 @@
             const card = currentFlashcardSet[currentCardIndex];
             if (!card) return;
 
+            // Trigger edit-mode animation on the flashcard stage
+            const stage = document.getElementById('flashcard-stage');
+            stage.classList.remove('edit-anim');
+            void stage.offsetWidth; // force reflow so animation replays
+            stage.classList.add('edit-anim');
+
             document.getElementById('fc-edit-question').value = card.front;
             document.getElementById('fc-edit-answer').value = card.back;
 
@@ -4950,7 +5141,14 @@
             setTimeout(expandBoth, 10);
             setTimeout(() => {
                 expandBoth();
-                document.getElementById('fc-edit-question').focus();
+                const activeCard = document.getElementById('active-flashcard');
+                const isAnswerSide = activeCard && activeCard.classList.contains('flipped');
+                const targetInput = document.getElementById(isAnswerSide ? 'fc-edit-answer' : 'fc-edit-question');
+                if (targetInput) {
+                    targetInput.focus();
+                    const length = targetInput.value.length;
+                    targetInput.setSelectionRange(length, length);
+                }
             }, 350);
         }
 
@@ -4960,6 +5158,7 @@
 
             inlineEditEl.classList.remove('active');
             document.getElementById('flashcard-stage').classList.remove('editing-active');
+            document.getElementById('flashcard-stage').classList.remove('edit-anim');
             document.getElementById('fc-edit-btn').style.display = 'flex';
 
             if (wasActive) {
@@ -5624,7 +5823,7 @@
                     'angular',
                     'bin'
                 ]);
-                let symbolList = ['.', ',', ';', ':', '{', '}', '[', ']', '(', ')', '<', '>', '/', '\\', '|', '&', '^', '%', '$', '#', '@', '!', '~', '`', '+', '-', '*', '?']
+                let symbolList = ['.', ',', ';', ':', '[', ']', '(', ')', '<', '>', '/', '\\', '|', '&', '^', '%', '$', '#', '@', '!', '~', '`', '+', '*', '?']
                 if (!LangList.has(lang?.toLowerCase()))
                     !symbolList.includes(code[0]) ? code = lang + ' ' + code : code = lang + code
 
@@ -5660,6 +5859,7 @@
         }
         // --- KEYBOARD TOPIC GRID NAVIGATION ---
         let kbSelectedIndex = -1;
+        let kbLastSelectedIndex = -1; // remember the position number before opening a modal
 
         function navigateTopicGrid(key, topicCards) {
             const count = topicCards.length;
@@ -5726,6 +5926,16 @@
         function clearKbSelection() {
             kbSelectedIndex = -1;
             document.querySelectorAll('.topic-item.kb-selected').forEach(c => c.classList.remove('kb-selected'));
+        }
+
+        // Restore keyboard selection to the same position number before a modal was opened
+        function restoreKbSelection() {
+            if (kbLastSelectedIndex < 0) return;
+            const topicCards = topicsList.querySelectorAll('.topic-item');
+            if (topicCards.length === 0) { kbLastSelectedIndex = -1; return; }
+            // Clamp to list bounds (in case topics were deleted)
+            const idx = Math.min(kbLastSelectedIndex, topicCards.length - 1);
+            setKbSelection(idx, topicCards);
         }
 
         // Clear selection when user clicks anywhere or focuses an input
