@@ -172,7 +172,7 @@ Contributions are welcome! Here are some ideas:
 
 ## 📄 License
 
-This project is open source. See the <a href="https://github.com/Jay-prakash120/flashcard-app"> repository</a> for license details.
+This project is open source. See the <a href="https://github.com/Jay-prakash120/flashcard-app/tree/main?tab=MIT-1-ov-file"> repository</a> for license details.
 
 ---
 
