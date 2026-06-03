@@ -46,7 +46,7 @@ FocusFlow is a premium, single-file web application for creating, managing, and 
 - **Glassmorphism & gradients** — modern visual design with depth and layering
 - **Micro-animations** — bounce effects, slide-ins, glow pulses, fire particle animations
 - **Syntax highlighting** — code blocks rendered with [Highlight.js](https://highlightjs.org/) (Atom One Dark theme)
-- **Custom markdown-like renderer** — supports `code`, `heading`, `subheading`, `point`, `link/url`, and more block types
+- **Custom content renderer** — inline code highlights, fenced code blocks, structured lists, and clickable link blocks (see [Formatting Guide](#-content-formatting-guide) below)
 - **Responsive layout** — works on desktop and mobile
 - **Custom scrollbars** and text selection colors
 
@@ -89,10 +89,115 @@ FocusFlow is a premium, single-file web application for creating, managing, and 
 
 ---
 
+## 📝 Content Formatting Guide
+
+FocusFlow uses a custom lightweight markup syntax inside flashcard answers, questions, and topic descriptions. Here's everything you can do:
+
+### Inline Code — Highlight a Keyword
+
+Wrap any word or phrase in single backticks ` to highlight it as inline code:
+
+```
+The `useState` hook returns a state variable and a `setter` function.
+```
+
+**Renders as:** The `useState` hook returns a state variable and a `setter` function — displayed with a colored background pill.
+
+---
+
+### Fenced Code Blocks — Syntax Highlighted
+
+Wrap multi-line code in triple backticks with an optional language identifier for syntax highlighting:
+
+````
+```javascript
+function greet(name) {
+    return `Hello, ${name}!`;
+}
+```
+````
+
+This renders as a dark-themed code block with:
+- ✅ Syntax highlighting (powered by Highlight.js)
+- ✅ A **Copy** button in the top-right corner
+- ✅ Horizontal scrolling for long lines
+
+If no language is specified, the highlighter auto-detects the language.
+
+---
+
+### Structured Lists — `li` Block
+
+Use ` ```li ` to create organized, styled lists with optional section headers:
+
+````
+```li
+Advantages:
+- Fast execution speed
+- Low memory usage
+- Cross-platform support
+
+Disadvantages:
+- Steep learning curve
+- Verbose syntax
+```
+````
+
+**How it works:**
+- Lines ending with `:` become **section headers** (styled in the primary color with an underline)
+- Lines starting with `-`, `*`, or `+` become **bullet points**
+- Numbered lines (`1.`, `2.`, etc.) become **ordered list items**
+- Inline backticks (`` `keyword` ``) work inside list items too
+
+---
+
+### Clickable Links — `link` / `url` Block
+
+Use ` ```link ` or ` ```url ` to embed a clickable external link:
+
+````
+```link
+https://developer.mozilla.org/en-US/docs/Web/JavaScript MDN JavaScript Docs
+```
+````
+
+**Format:** The first word is the URL, everything after it is the display text. If no display text is given, the URL itself is shown.
+
+Renders as a styled button-like link with an external link icon that opens in a new tab.
+
+---
+
+### Combining Everything
+
+You can freely mix all formatting types in a single flashcard:
+
+````
+The `map()` method creates a new array by calling a function on every element.
+
+```javascript
+const nums = [1, 2, 3];
+const doubled = nums.map(n => n * 2);
+console.log(doubled); // [2, 4, 6]
+```
+
+```li
+Key Points:
+- Does NOT mutate the original array
+- Returns a new array of the same length
+- Callback receives `element`, `index`, and `array`
+```
+
+```link
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map MDN Reference
+```
+````
+
+---
+
 ## 🚀 Getting Started
 
 ### Option 1: Direct Open
-Simply open the `2nd Stage.html` file in any modern browser:
+Simply open the `index.html` file in any modern browser:
 
 ```
 Just double-click the file — no server needed!
@@ -103,7 +208,7 @@ For a development experience with auto-reload:
 
 ```bash
 # Using VS Code Live Server extension
-# Right-click "2nd Stage.html" → "Open with Live Server"
+# Right-click "index.html" → "Open with Live Server"
 
 # Or use any static file server
 npx serve .
@@ -114,14 +219,14 @@ npx serve .
 ```bash
 git clone https://github.com/Jay-prakash120/flashcard-app.git
 cd flashcard-app
-# Open "2nd Stage.html" in your browser
+# Open "index.html" in your browser
 ```
 
 ---
 
 ## 🏗️ Architecture
 
-FocusFlow is a **single-file application** — all HTML, CSS, and JavaScript live in one `2nd Stage.html` file (~225KB). This design choice prioritizes:
+FocusFlow is a **single-file application** — all HTML, CSS, and JavaScript live in one `index.html` file (~225KB). This design choice prioritizes:
 
 - **Zero setup** — no `npm install`, no build steps
 - **Maximum portability** — works offline, on any device, from a USB drive
