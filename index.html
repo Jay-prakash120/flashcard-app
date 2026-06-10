@@ -3689,11 +3689,15 @@
                         const topicCards = topicsList.querySelectorAll('.topic-item');
                         if (topicCards.length > 0) {
                             e.preventDefault();
-                            navigateTopicGrid(e.key, topicCards);
+                            navigateTopicGrid(e.key, topicCards, e);
                             return;
                         }
                     }
                 }
+
+                let selectedItem = document.querySelector(".kb-selected");
+
+                if(e.key === 'Delete' && selectedItem) deleteTopic(`${selectedItem.dataset.topicId}`)
 
                 if (e.ctrlKey || e.metaKey) {
 
@@ -5878,7 +5882,7 @@
         let kbSelectedIndex = -1;
         let kbLastSelectedIndex = -1; // remember the position number before opening a modal
 
-        function navigateTopicGrid(key, topicCards) {
+        function navigateTopicGrid(key, topicCards, e) {
             const count = topicCards.length;
             if (count === 0) return;
 
