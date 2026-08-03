@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FocusFlow | Spaced Repetition & Flashcards</title>
+    <title>FocusFlow</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -12,6 +12,8 @@
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="https://raw.githubusercontent.com/Jay-prakash120/flashcard-app/refs/heads/main/11053193.png" sizes="any" type="image/svg+xml">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#6366f1">
 
     <!-- Highlight.js Syntax Highlighting -->
     <link rel="stylesheet"
@@ -2243,24 +2245,27 @@
         .option-again {
             color: #dc2626;
             border-color: #fef2f2;
+            user-select: none;
         }
-
+        
         .option-hard {
             color: #d97706;
             border-color: #fffbeb;
+            user-select: none;
         }
-
-        .option-good {
-            color: #059669;
-            border-color: #ecfdf5;
-        }
-
-        .option-easy {
-            color: #2563eb;
-            border-color: #eff6ff;
-        }
-
-        .option-again {
+    
+    .option-good {
+        color: #059669;
+        border-color: #ecfdf5;
+        user-select: none;
+    }
+.option-easy {
+    color: #2563eb;
+    border-color: #eff6ff;
+    user-select: none;
+    }
+    
+    .option-again {
             background: #fef2f2;
         }
 
@@ -2701,8 +2706,8 @@
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            border: 2px solid rgba(99, 102, 241, 0.3);
-            background: var(--bg-card);
+            border: 2px solid rgb(99 102 241 / 0%);
+            background: #1c191700;
             color: var(--primary);
             cursor: pointer;
             display: flex;
@@ -2715,11 +2720,11 @@
         }
 
         .fc-edit-btn:hover {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
+            background: #2b2d7b;
+            color: #c3c5ff;
+            /* border-color: var(--primary); */
             transform: scale(1.1);
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
+            /* box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35); */
         }
 
         .fc-inline-edit {
@@ -2867,8 +2872,8 @@
 
         .flashcard-label,
         .flashcard-hint,
-        .close-modal,
-        #fc-modal-title {
+        .close-modal
+         {
             user-select: none;
         }
 
@@ -3025,6 +3030,276 @@
                     padding: 40px 15px;
                 }
             }
+
+        /* ===== DETAILS MODAL ===== */
+        .details-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgb(20 18 16 / 70%);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.2s;
+        }
+
+        .details-modal .modal-content {
+            max-width: 780px;
+            width: 94%;
+            max-height: 90vh;
+            padding: 36px 32px;
+        }
+
+        .details-modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            margin-bottom: 4px;
+            color: var(--text-main);
+        }
+
+        .details-modal-subtitle {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        /* Summary Cards Row */
+        .details-summary-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .details-summary-card {
+            background: var(--bg-body);
+            border-radius: 14px;
+            padding: 16px 14px;
+            text-align: center;
+            border: 1px solid rgba(0,0,0,0.04);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .details-summary-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .details-summary-value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.2;
+        }
+
+        .details-summary-label {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        body.dark-mode .details-summary-card {
+            background: #1c1917;
+            border-color: #2e2824;
+        }
+
+        /* Chart Section */
+        .details-section {
+            margin-bottom: 28px;
+        }
+
+        .details-section-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-main);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .details-section-title i {
+            color: var(--primary);
+            font-size: 0.85rem;
+        }
+
+        .details-charts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 8px;
+        }
+
+        .details-chart-box {
+            background: var(--bg-body);
+            border-radius: 16px;
+            padding: 18px;
+            border: 1px solid rgba(0,0,0,0.04);
+            position: relative;
+        }
+
+        .details-chart-box.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .details-chart-label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .details-chart-canvas {
+            width: 100%;
+            display: block;
+        }
+
+        body.dark-mode .details-chart-box {
+            background: #1c1917;
+            border-color: #2e2824;
+        }
+
+        /* Rating Distribution Legend */
+        .details-legend {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .details-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .details-legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        /* History Table */
+        .details-history-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .details-history-table th {
+            text-align: left;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 10px 12px;
+            border-bottom: 2px solid rgba(0,0,0,0.06);
+            position: sticky;
+            top: 0;
+            background: var(--bg-body);
+            z-index: 1;
+        }
+
+        .details-history-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(0,0,0,0.04);
+            color: var(--text-main);
+        }
+
+        .details-history-table tbody tr {
+            transition: background 0.15s;
+        }
+
+        .details-history-table tbody tr:hover {
+            background: rgba(99,102,241,0.04);
+        }
+
+        body.dark-mode .details-history-table th {
+            border-color: #2e2824;
+            background: #1c1917;
+        }
+
+        body.dark-mode .details-history-table td {
+            border-color: #2e2824;
+        }
+
+        body.dark-mode .details-history-table tbody tr:hover {
+            background: rgba(99,102,241,0.08);
+        }
+
+        .details-rating-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .details-rating-badge.rating-again { background: rgba(220,38,38,0.12); color: #dc2626; }
+        .details-rating-badge.rating-hard { background: rgba(217,119,6,0.12); color: #d97706; }
+        .details-rating-badge.rating-good { background: rgba(5,150,105,0.12); color: #059669; }
+        .details-rating-badge.rating-easy { background: rgba(37,99,235,0.12); color: #2563eb; }
+
+        body.dark-mode .details-rating-badge.rating-again { background: rgba(220,38,38,0.2); color: #fca5a5; }
+        body.dark-mode .details-rating-badge.rating-hard { background: rgba(217,119,6,0.2); color: #fbbf24; }
+        body.dark-mode .details-rating-badge.rating-good { background: rgba(5,150,105,0.2); color: #6ee7b7; }
+        body.dark-mode .details-rating-badge.rating-easy { background: rgba(37,99,235,0.2); color: #93c5fd; }
+
+        .details-difficulty-dot {
+            display: inline-block;
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .details-history-scroll {
+            max-height: 260px;
+            overflow-y: auto;
+            border-radius: 12px;
+            background: var(--bg-body);
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        body.dark-mode .details-history-scroll {
+            background: #1c1917;
+            border-color: #2e2824;
+        }
+
+        .details-empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+
+        .details-empty-state i {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            color: var(--primary-light);
+            display: block;
+        }
+
+
+        @media (max-width: 600px) {
+            .details-summary-row { grid-template-columns: repeat(2, 1fr); }
+            .details-charts-grid { grid-template-columns: 1fr; }
+            .details-modal .modal-content { padding: 24px 14px; }
+        }
     </style>
 </head>
 
@@ -3044,6 +3319,9 @@
                     onclick="openCloudSetupModal()">
                     <i class="fas fa-cloud-upload-alt"></i>
                 </button>
+                <!-- <a href="mistake.html" class="control-icon-btn" id="mistakeflow-btn" aria-label="MistakeFlow" title="MistakeFlow — Track your mistakes" style="text-decoration:none;"> -->
+                    <!-- <i class="fas fa-bug" style="color:#ef4444;"></i> -->
+                </a>
             </div>
 
             <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark Mode">
@@ -3408,6 +3686,97 @@
         </div>
     </div>
 
+    <!-- Details Modal -->
+    <div class="details-modal" id="details-modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-details-modal">&times;</span>
+            <div class="details-modal-title" id="details-modal-title">Topic Details</div>
+            <div class="details-modal-subtitle" id="details-modal-subtitle">Review history & performance analytics</div>
+
+            <!-- Summary Stats -->
+            <div class="details-summary-row" id="details-summary-row">
+                <div class="details-summary-card">
+                    <div class="details-summary-value" id="det-total-reviews" style="color: var(--primary);">0</div>
+                    <div class="details-summary-label">Reviews</div>
+                </div>
+                <div class="details-summary-card">
+                    <div class="details-summary-value" id="det-current-interval" style="color: var(--info);">0d</div>
+                    <div class="details-summary-label">Interval</div>
+                </div>
+                <div class="details-summary-card">
+                    <div class="details-summary-value" id="det-ease-factor" style="color: var(--secondary);">2.5</div>
+                    <div class="details-summary-label">Ease Factor</div>
+                </div>
+                <div class="details-summary-card">
+                    <div class="details-summary-value" id="det-success-rate" style="color: var(--success);">-</div>
+                    <div class="details-summary-label">Success Rate</div>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="details-section" id="details-charts-section">
+                <div class="details-section-title"><i class="fas fa-chart-area"></i> Performance Trends</div>
+                <div class="details-charts-grid">
+                    <div class="details-chart-box full-width">
+                        <div class="details-chart-label">Interval Growth Over Time</div>
+                        <canvas id="det-chart-interval" class="details-chart-canvas" height="180"></canvas>
+                    </div>
+                    <div class="details-chart-box">
+                        <div class="details-chart-label">Rating Distribution</div>
+                        <canvas id="det-chart-ratings" class="details-chart-canvas" height="180"></canvas>
+                        <div class="details-legend" id="det-ratings-legend"></div>
+                    </div>
+                    <div class="details-chart-box">
+                        <div class="details-chart-label">Rating Timeline</div>
+                        <canvas id="det-chart-timeline" class="details-chart-canvas" height="180"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History Table -->
+            <div class="details-section">
+                <div class="details-section-title"><i class="fas fa-history"></i> Revision History</div>
+                <div class="details-history-scroll" id="details-history-scroll">
+                    <table class="details-history-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Date</th>
+                                <th>Rating</th>
+                                <th>Interval</th>
+                                <th>Difficulty</th>
+                            </tr>
+                        </thead>
+                        <tbody id="details-history-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deletion Confirmation Modal for Mastered / Easy Topics -->
+    <div class="cloud-modal-overlay" id="easy-deletion-modal-overlay">
+        <div class="cloud-modal" style="max-width: 460px; text-align: center; border-radius: 24px; padding: 36px 30px;">
+            <div style="font-size: 3.2rem; margin-bottom: 8px;">🎓</div>
+            <h2 style="justify-content: center; margin-bottom: 8px; font-size: 1.5rem; color: var(--text-main);">Topic Mastered!</h2>
+            <p class="modal-subtitle" id="easy-deletion-subtitle" style="margin-bottom: 20px; font-size: 0.95rem; color: var(--text-muted);">
+                You've reviewed "<strong id="easy-deletion-topic-title" style="color: var(--primary);"></strong>" <span id="easy-deletion-count" style="font-weight: 700;"></span> times and achieved <strong style="color: var(--success);">long-term mastery</strong>!
+            </p>
+            <div style="background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.2); padding: 14px 16px; border-radius: 14px; margin-bottom: 24px; font-size: 0.88rem; color: var(--text-main); text-align: left; line-height: 1.5;">
+                <i class="fas fa-lightbulb" style="color: var(--warning); margin-right: 6px;"></i> 
+                This topic has reached a retention interval of <strong id="easy-deletion-interval"></strong> days. Would you like to <strong>delete</strong> it now to keep your study list clean?
+            </div>
+            <div class="cloud-modal-actions" style="flex-direction: row; gap: 12px;">
+                <button id="btn-keep-topic" class="btn-cloud" onclick="closeEasyDeletionModal(false)" style="flex: 1; background: var(--bg-body); color: var(--text-main); border: 1.5px solid var(--text-muted); padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; outline-offset: 3px;">
+                    <i class="fas fa-bookmark"></i> Keep Topic
+                </button>
+                <button id="btn-delete-topic" class="btn-cloud" onclick="confirmEasyDeletion()" style="flex: 1; background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border: none; padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35); outline-offset: 3px;">
+                    <i class="fas fa-trash-alt"></i> Delete Topic
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Scroll to Top Button -->
     <button class="scroll-to-top" id="scroll-to-top" aria-label="Scroll to top">
         <i class="fas fa-arrow-up"></i>
@@ -3442,6 +3811,24 @@
             history: [] // Array of date strings
         };
 
+        // --- Shared Date Formatting (DD MMM YYYY standard) ---
+        function formatDateDMY(dateInput) {
+            const d = new Date(dateInput);
+            if (isNaN(d)) return '—';
+            return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+        }
+        function formatDateDM(dateInput) {
+            const d = new Date(dateInput);
+            if (isNaN(d)) return '—';
+            return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+        }
+        function formatDateTimeDMY(dateInput) {
+            const d = new Date(dateInput);
+            if (isNaN(d)) return '—';
+            return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+                + ', ' + d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+        }
+
         // Tracks when local data was actually last changed (not when it was read)
         function getLocalModifiedTime() {
             return localStorage.getItem('localDataModified') || '1970-01-01T00:00:00.000Z';
@@ -3465,6 +3852,7 @@
         const reviewModal = document.getElementById('review-modal');
         const editModal = document.getElementById('edit-modal');
         const flashcardModal = document.getElementById('flashcard-modal');
+        const detailsModal = document.getElementById('details-modal');
 
         const totalTopicsEl = document.getElementById('total-topics');
         const dueTopicsEl = document.getElementById('due-topics');
@@ -3511,6 +3899,7 @@
             }
 
             // App Initialization
+            cleanupSynthesizedHistory();
             updateStreak();
             renderTopics();
             updateStatistics();
@@ -3541,9 +3930,27 @@
 
             // Global Keyboard Shortcuts (Ctrl+S, Ctrl+Number)
             window.addEventListener('keydown', function (e) {
+                const easyOverlay = document.getElementById('easy-deletion-modal-overlay');
+                if (easyOverlay && easyOverlay.classList.contains('show')) {
+                    if (e.key === 'Escape') {
+                        e.preventDefault();
+                        closeEasyDeletionModal(false);
+                        return;
+                    } else if (e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        document.getElementById('btn-keep-topic')?.focus();
+                        return;
+                    } else if (e.key === 'ArrowRight') {
+                        e.preventDefault();
+                        document.getElementById('btn-delete-topic')?.focus();
+                        return;
+                    }
+                }
 
-                // --- Escape Key (close editing windows) ---
+                // --- Ctrl+Escape Key (close editing windows) ---
+                // if (e.key === 'Escape' && e.ctrlKey) {
                 if (e.key === 'Escape') {
+
                     // 1. Inline flashcard edit is active → cancel it
                     const inlineEdit = document.getElementById('fc-inline-edit');
                     if (inlineEdit && inlineEdit.classList.contains('active')) {
@@ -3578,6 +3985,14 @@
                         return;
                     }
 
+                    // 4b. Details modal is open → close it
+                    if (detailsModal && detailsModal.style.display === 'flex') {
+                        e.preventDefault();
+                        detailsModal.style.display = 'none';
+                        restoreKbSelection();
+                        return;
+                    }
+
                     // 5. Clear keyboard topic selection
                     if (kbSelectedIndex >= 0) {
                         e.preventDefault();
@@ -3593,7 +4008,8 @@
                 if ((e.key.toLowerCase() === 'a' || e.key.toLowerCase() === 'n') && !e.ctrlKey && !e.metaKey && !isInput) {
                     const isAnyModalOpen = (flashcardModal && flashcardModal.style.display === 'flex') ||
                         (reviewModal && reviewModal.style.display === 'flex') ||
-                        (editModal && editModal.style.display === 'flex');
+                        (editModal && editModal.style.display === 'flex') ||
+                        (detailsModal && detailsModal.style.display === 'flex');
                     if (!isAnyModalOpen) {
                         e.preventDefault();
                         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -3609,7 +4025,8 @@
                 if (e.key.toLowerCase() === 't' && !e.ctrlKey && !e.metaKey && !isInput) {
                     const isAnyModalOpen = (flashcardModal && flashcardModal.style.display === 'flex') ||
                         (reviewModal && reviewModal.style.display === 'flex') ||
-                        (editModal && editModal.style.display === 'flex');
+                        (editModal && editModal.style.display === 'flex') ||
+                        (detailsModal && detailsModal.style.display === 'flex');
                     if (!isAnyModalOpen) {
                         e.preventDefault();
                         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -3621,7 +4038,8 @@
                 if (e.key.toLowerCase() === 'b' && !e.ctrlKey && !e.metaKey && !isInput) {
                     const isAnyModalOpen = (flashcardModal && flashcardModal.style.display === 'flex') ||
                         (reviewModal && reviewModal.style.display === 'flex') ||
-                        (editModal && editModal.style.display === 'flex');
+                        (editModal && editModal.style.display === 'flex') ||
+                        (detailsModal && detailsModal.style.display === 'flex');
                     if (!isAnyModalOpen) {
                         e.preventDefault();
                         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
@@ -3633,7 +4051,8 @@
                 if (e.key === "Enter" && !e.ctrlKey && !e.metaKey && !isInput) {
                     const isAnyModalOpen = (flashcardModal && flashcardModal.style.display === 'flex') ||
                         (reviewModal && reviewModal.style.display === 'flex') ||
-                        (editModal && editModal.style.display === 'flex');
+                        (editModal && editModal.style.display === 'flex') ||
+                        (detailsModal && detailsModal.style.display === 'flex');
                     if (!isAnyModalOpen) {
                         // 1. Try text selection first
                         const selection = window.getSelection();
@@ -3684,7 +4103,8 @@
                 if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key) && !e.ctrlKey && !e.metaKey && !isInput) {
                     const isAnyModalOpen = (flashcardModal && flashcardModal.style.display === 'flex') ||
                         (reviewModal && reviewModal.style.display === 'flex') ||
-                        (editModal && editModal.style.display === 'flex');
+                        (editModal && editModal.style.display === 'flex') ||
+                        (detailsModal && detailsModal.style.display === 'flex');
                     if (!isAnyModalOpen) {
                         const topicCards = topicsList.querySelectorAll('.topic-item');
                         if (topicCards.length > 0) {
@@ -3909,6 +4329,11 @@
                 }
             };
 
+            document.getElementById('close-details-modal').onclick = () => {
+                detailsModal.style.display = 'none';
+                restoreKbSelection();
+            };
+
             // Review Logic
             document.querySelectorAll('.review-option').forEach(option => {
                 option.addEventListener('click', function () {
@@ -3920,6 +4345,8 @@
 
             document.getElementById('submit-review').addEventListener('click', function () {
                 if (selectedRating && currentReviewTopic) {
+                    const topicReviewed = currentReviewTopic;
+                    const ratingGiven = selectedRating;
                     updateTopicAfterReview(currentReviewTopic, selectedRating);
                     updateStreakAfterReview();
                     reviewModal.style.display = 'none';
@@ -3928,6 +4355,13 @@
                     updateStatistics();
                     updateStreak();
                     restoreKbSelection();
+
+                    // Prompt for deletion if topic is too easy and repeated too many times
+                    if (checkEasyDeletionEligibility(topicReviewed, ratingGiven)) {
+                        setTimeout(() => {
+                            promptEasyDeletion(topicReviewed);
+                        }, 500);
+                    }
                 } else {
                     alert('Please select how well you remembered the topic');
                 }
@@ -3968,6 +4402,14 @@
                             flashcardModal.style.display = 'flex';
                         });
                     }
+                }
+                if (e.target === detailsModal) {
+                    detailsModal.style.display = 'none';
+                    restoreKbSelection();
+                }
+                const easyOverlay = document.getElementById('easy-deletion-modal-overlay');
+                if (e.target === easyOverlay) {
+                    closeEasyDeletionModal(false);
                 }
             });
         });
@@ -4699,7 +5141,7 @@
                 const timeEl = document.getElementById('last-backup-time');
                 if (config.lastBackup) {
                     const d = new Date(config.lastBackup);
-                    timeEl.textContent = 'Last backup: ' + d.toLocaleString();
+                    timeEl.textContent = 'Last backup: ' + formatDateTimeDMY(d);
                 } else {
                     timeEl.textContent = 'Last backup: never';
                 }
@@ -5385,7 +5827,8 @@
                 nextReview: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString(),
                 reviewCount: 0,
                 createdAt: new Date().toISOString(),
-                lastReviewed: null
+                lastReviewed: null,
+                reviewHistory: []
             };
 
             topics.push(newTopic);
@@ -5431,6 +5874,7 @@
                         <div class="topic-menu">
                             <button class="menu-btn"><i class="fas fa-ellipsis-v"></i></button>
                             <div class="menu-dropdown">
+                                <div class="menu-item" onclick="openDetailsModal('${topic.id}')"><i class="fas fa-chart-line"></i> Details</div>
                                 <div class="menu-item edit-item" onclick="openEditModal('${topic.id}')"><i class="fas fa-edit"></i> Edit</div>
                                 <div class="menu-item delete delete-item" onclick="deleteTopic('${topic.id}')"><i class="fas fa-trash"></i> Delete</div>
                             </div>
@@ -5455,7 +5899,7 @@
 
                     <div class="topic-meta">
                         <span class="unselectable difficulty difficulty-${topic.difficulty}">${topic.difficulty}</span>
-                        <span><i class="far fa-calendar-alt"></i> ${new Date(topic.nextReview).toLocaleDateString()}</span>
+                        <span><i class="far fa-calendar-alt"></i> ${formatDateDMY(topic.nextReview)}</span>
                     </div>
                 `;
                 topicsList.appendChild(topicElement);
@@ -5484,7 +5928,7 @@
                 document.getElementById('review-topic-description').innerHTML = currentReviewTopic.description ? renderQuestion(currentReviewTopic.description) : 'No description provided';
 
                 const lastReviewed = currentReviewTopic.lastReviewed ?
-                    new Date(currentReviewTopic.lastReviewed).toLocaleDateString() :
+                    formatDateDMY(currentReviewTopic.lastReviewed) :
                     'Never';
 
                 document.getElementById('review-last-date').textContent = lastReviewed;
@@ -5551,14 +5995,22 @@
 
             const currentTopic = topics[topicIndex];
 
-            // Handle failures separately (no ease factor modification)
+            // Ensure reviewHistory array exists (migration)
+            if (!currentTopic.reviewHistory) currentTopic.reviewHistory = [];
+
+            // Handle failures separately
             if (rating === 1) {
-                // "Again": Reset to 1 day, don't touch ease factor or review count
+                // "Again": Reset to 1 day
                 currentTopic.interval = 1;
+                // Reduce ease factor for failure
+                currentTopic.easeFactor = Math.max(1.3, currentTopic.easeFactor - 0.2);
                 // Don't increment reviewCount on failures
             } else {
-                // Only modify ease factor on passing grades (2, 3, 4)
-                let newEaseFactor = currentTopic.easeFactor + (0.1 - (5 - rating) * (0.08 + (5 - rating) * 0.02));
+                // Map our 1-4 rating scale to SM-2's 0-5 scale
+                // 2 (Hard) -> 3, 3 (Good) -> 4, 4 (Easy) -> 5
+                const q = rating + 1;
+                
+                let newEaseFactor = currentTopic.easeFactor + (0.1 - (5 - q) * (0.08 + (5 - q) * 0.02));
                 if (newEaseFactor < 1.3) newEaseFactor = 1.3;
                 currentTopic.easeFactor = newEaseFactor;
 
@@ -5579,6 +6031,11 @@
                     }
                 }
 
+                // Cap interval at 365 days
+                if (currentTopic.interval > 365) {
+                    currentTopic.interval = 365;
+                }
+
                 // Only increment review count on successful reviews
                 currentTopic.reviewCount += 1;
             }
@@ -5591,11 +6048,66 @@
 
             currentTopic.lastReviewed = new Date().toISOString();
 
+            // Record review history entry
+            const ratingNames = { 1: 'again', 2: 'hard', 3: 'good', 4: 'easy' };
+            currentTopic.reviewHistory.push({
+                date: new Date().toISOString(),
+                rating: rating,
+                ratingName: ratingNames[rating] || 'unknown',
+                interval: currentTopic.interval,
+                easeFactor: currentTopic.easeFactor,
+                difficulty: currentTopic.difficulty
+            });
+
             saveTopics();
         }
 
-        function deleteTopic(topicId) {
-            if (confirm('Are you sure you want to delete this topic?')) {
+        // ============================================================
+        // --- EASY & REPEATED TOPIC DELETION PROMPT ---
+        let topicPendingEasyDeletion = null;
+
+        function checkEasyDeletionEligibility(topic, lastRating) {
+            if (!topic) return false;
+            const count = topic.reviewCount || 0;
+            const interval = topic.interval || 0;
+
+            // Criteria for Mastered Topic:
+            // 1. At least 6 successful repetitions (count >= 6)
+            // 2. Interval has reached at least 240 days (8 months)
+            // 3. User just rated it Good (3) or Easy (4)
+            if (count >= 6 && interval >= 240 && lastRating >= 3) {
+                return true;
+            }
+            return false;
+        }
+
+        function promptEasyDeletion(topic) {
+            topicPendingEasyDeletion = topic;
+            document.getElementById('easy-deletion-topic-title').textContent = topic.title;
+            document.getElementById('easy-deletion-count').textContent = topic.reviewCount || 1;
+            document.getElementById('easy-deletion-interval').textContent = topic.interval || 1;
+            document.getElementById('easy-deletion-modal-overlay').classList.add('show');
+            setTimeout(() => {
+                const btn = document.getElementById('btn-keep-topic');
+                if (btn) btn.focus();
+            }, 50);
+        }
+
+        function closeEasyDeletionModal(shouldDelete = false) {
+            document.getElementById('easy-deletion-modal-overlay').classList.remove('show');
+            if (shouldDelete && topicPendingEasyDeletion) {
+                deleteTopic(topicPendingEasyDeletion.id, true);
+                showBackupToast('Topic deleted after mastery! 🎓');
+            }
+            topicPendingEasyDeletion = null;
+        }
+
+        function confirmEasyDeletion() {
+            closeEasyDeletionModal(true);
+        }
+
+        function deleteTopic(topicId, skipConfirm = false) {
+            if (skipConfirm || confirm('Are you sure you want to delete this topic?')) {
                 topics = topics.filter(topic => topic.id !== topicId);
                 trackDeletion(topicId);
                 saveTopics();
@@ -5672,7 +6184,7 @@
                         return;
                     }
 
-                    if (confirm(`Found ${data.topics.length} topics from ${new Date(data.exportDate).toLocaleDateString()}. \n\nThis will OVERWRITE your current data. Continue?`)) {
+                    if (confirm(`Found ${data.topics.length} topics from ${formatDateDMY(data.exportDate)}. \n\nThis will OVERWRITE your current data. Continue?`)) {
 
                         // Update LocalStorage
                         localStorage.setItem('spacedRepetitionTopics', JSON.stringify(data.topics));
@@ -5969,6 +6481,416 @@
             }
         });
 
+        // ===== DETAILS MODAL & CHARTS =====
+
+        // One-time cleanup: purge any fake synthesized history entries,
+        // keeping only real review data collected from actual reviews.
+        function cleanupSynthesizedHistory() {
+            const CLEANUP_KEY = 'historyCleanupV3';
+            if (!localStorage.getItem(CLEANUP_KEY)) {
+                let changed = false;
+                topics.forEach(t => {
+                    if (!t.reviewHistory) { t.reviewHistory = []; return; }
+                    const realOnly = t.reviewHistory.filter(h => !h.isSynthesized);
+                    if (realOnly.length !== t.reviewHistory.length) {
+                        t.reviewHistory = realOnly;
+                        changed = true;
+                    }
+                });
+                if (changed) saveTopics();
+                localStorage.setItem(CLEANUP_KEY, Date.now().toString());
+            }
+            // Ensure all topics have the array initialized
+            topics.forEach(t => { if (!t.reviewHistory) t.reviewHistory = []; });
+        }
+
+        function openDetailsModal(topicId) {
+            const topic = topics.find(t => t.id === topicId);
+            if (!topic) return;
+
+            const history = topic.reviewHistory || [];
+            const modal = document.getElementById('details-modal');
+
+            // Title
+            document.getElementById('details-modal-title').textContent = topic.title;
+            document.getElementById('details-modal-subtitle').textContent =
+                history.length > 0
+                    ? `${history.length} review${history.length !== 1 ? 's' : ''} recorded`
+                    : 'No reviews yet — start reviewing to see analytics';
+
+            // Summary stats
+            document.getElementById('det-total-reviews').textContent = topic.reviewCount || history.length || 0;
+            document.getElementById('det-current-interval').textContent = `${topic.interval || 0}d`;
+            document.getElementById('det-ease-factor').textContent = (topic.easeFactor || 2.5).toFixed(2);
+
+            if (history.length > 0) {
+                const successCount = history.filter(h => h.rating >= 2).length;
+                const rate = Math.round((successCount / history.length) * 100);
+                document.getElementById('det-success-rate').textContent = rate + '%';
+            } else {
+                document.getElementById('det-success-rate').textContent = '-';
+            }
+
+            // Charts section
+            const chartsSection = document.getElementById('details-charts-section');
+            if (history.length < 1) {
+                chartsSection.style.display = 'none';
+            } else {
+                chartsSection.style.display = 'block';
+                // Defer chart rendering to after modal is visible
+                setTimeout(() => {
+                    renderIntervalChart(history);
+                    renderRatingsDonut(history);
+                    renderTimelineChart(history);
+                }, 50);
+            }
+
+            // History table
+            const tbody = document.getElementById('details-history-body');
+            if (history.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:30px; color:var(--text-muted);">
+                    <i class="fas fa-chart-bar" style="font-size:1.5rem; display:block; margin-bottom:8px; opacity:0.3;"></i>
+                    No revision data yet. Review this topic to start tracking!</td></tr>`;
+            } else {
+                tbody.innerHTML = history.slice().reverse().map((h, i) => {
+                    const num = history.length - i;
+                    const dateStr = formatDateDMY(h.date);
+                    const timeStr = new Date(h.date).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+                    const ratingClass = 'rating-' + (h.ratingName || 'good');
+                    const ratingLabel = (h.ratingName || 'unknown').charAt(0).toUpperCase() + (h.ratingName || 'unknown').slice(1);
+                    const diffColor = h.difficulty === 'easy' ? '#10b981' : (h.difficulty === 'hard' ? '#ef4444' : '#f59e0b');
+                    const diffLabel = (h.difficulty || 'medium').charAt(0).toUpperCase() + (h.difficulty || 'medium').slice(1);
+
+                    return `<tr>
+                        <td style="font-weight:600; color:var(--text-muted);">${num}</td>
+                        <td><div style="font-weight:500;">${dateStr}</div><div style="font-size:0.72rem; color:var(--text-muted);">${timeStr}</div></td>
+                        <td><span class="details-rating-badge ${ratingClass}">${ratingLabel}</span></td>
+                        <td style="font-weight:600;">${h.interval || 1}d</td>
+                        <td><span class="details-difficulty-dot" style="background:${diffColor};"></span>${diffLabel}</td>
+                    </tr>`;
+                }).join('');
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        // --- CHART: Interval Growth (Smooth Area Chart) ---
+        function renderIntervalChart(history) {
+            const canvas = document.getElementById('det-chart-interval');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.parentElement.getBoundingClientRect();
+            const w = rect.width - 36; // padding
+            canvas.width = w * dpr;
+            canvas.height = 180 * dpr;
+            canvas.style.width = w + 'px';
+            canvas.style.height = '180px';
+            ctx.scale(dpr, dpr);
+            ctx.clearRect(0, 0, w, 180);
+
+            const isDark = document.body.classList.contains('dark-mode');
+            const textColor = isDark ? '#8a7e72' : '#9ca3af';
+            const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
+            const lineColor = '#6366f1';
+            const fillGrad = ctx.createLinearGradient(0, 0, 0, 180);
+            fillGrad.addColorStop(0, isDark ? 'rgba(99,102,241,0.3)' : 'rgba(99,102,241,0.2)');
+            fillGrad.addColorStop(1, 'rgba(99,102,241,0)');
+
+            const intervals = history.map(h => h.interval || 1);
+            const maxVal = Math.max(Math.ceil(Math.max(...intervals, 1) * 1.25), 5);
+
+            const padLeft = 35, padRight = 15, padTop = 15, padBottom = 30;
+            const chartW = w - padLeft - padRight;
+            const chartH = 180 - padTop - padBottom;
+
+            // Grid lines
+            ctx.strokeStyle = gridColor;
+            ctx.lineWidth = 1;
+            const gridLines = 4;
+            for (let i = 0; i <= gridLines; i++) {
+                const y = padTop + (chartH / gridLines) * i;
+                ctx.beginPath();
+                ctx.moveTo(padLeft, y);
+                ctx.lineTo(w - padRight, y);
+                ctx.stroke();
+
+                // Y-axis labels
+                const val = Math.round(maxVal - (maxVal / gridLines) * i);
+                ctx.fillStyle = textColor;
+                ctx.font = '10px Inter, sans-serif';
+                ctx.textAlign = 'right';
+                ctx.fillText(val + 'd', padLeft - 6, y + 3);
+            }
+
+            if (intervals.length < 2) {
+                // Single point — draw a dot
+                const x = padLeft + chartW / 2;
+                const y = padTop + chartH - (intervals[0] / maxVal) * chartH;
+                ctx.beginPath();
+                ctx.arc(x, y, 5, 0, Math.PI * 2);
+                ctx.fillStyle = lineColor;
+                ctx.fill();
+                ctx.font = '11px Inter, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(intervals[0] + 'd', x, y - 10);
+                return;
+            }
+
+            const points = intervals.map((val, i) => ({
+                x: padLeft + (i / (intervals.length - 1)) * chartW,
+                y: padTop + chartH - (val / maxVal) * chartH
+            }));
+
+            // Area fill with smooth curve
+            ctx.beginPath();
+            ctx.moveTo(points[0].x, padTop + chartH);
+            ctx.lineTo(points[0].x, points[0].y);
+            for (let i = 1; i < points.length; i++) {
+                const cp1x = (points[i - 1].x + points[i].x) / 2;
+                const cp1y = points[i - 1].y;
+                const cp2x = cp1x;
+                const cp2y = points[i].y;
+                ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, points[i].x, points[i].y);
+            }
+            ctx.lineTo(points[points.length - 1].x, padTop + chartH);
+            ctx.closePath();
+            ctx.fillStyle = fillGrad;
+            ctx.fill();
+
+            // Line
+            ctx.beginPath();
+            ctx.moveTo(points[0].x, points[0].y);
+            for (let i = 1; i < points.length; i++) {
+                const cp1x = (points[i - 1].x + points[i].x) / 2;
+                const cp1y = points[i - 1].y;
+                const cp2x = cp1x;
+                const cp2y = points[i].y;
+                ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, points[i].x, points[i].y);
+            }
+            ctx.strokeStyle = lineColor;
+            ctx.lineWidth = 2.5;
+            ctx.lineJoin = 'round';
+            ctx.stroke();
+
+            // Dots
+            points.forEach((p, i) => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 3.5, 0, Math.PI * 2);
+                ctx.fillStyle = lineColor;
+                ctx.fill();
+                ctx.strokeStyle = isDark ? '#1c1917' : '#ffffff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            });
+
+            // X-axis labels (show first, middle, last)
+            ctx.font = '9px Inter, sans-serif';
+            ctx.fillStyle = textColor;
+            ctx.textAlign = 'center';
+            const labelIndices = history.length <= 5
+                ? history.map((_, i) => i)
+                : [0, Math.floor(history.length / 2), history.length - 1];
+            labelIndices.forEach(i => {
+                if (i < history.length) {
+                    const dateStr = formatDateDM(history[i].date);
+                    ctx.fillText(dateStr, points[i].x, padTop + chartH + 18);
+                }
+            });
+        }
+
+        // --- CHART: Rating Distribution (Donut Chart) ---
+        function renderRatingsDonut(history) {
+            const canvas = document.getElementById('det-chart-ratings');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.parentElement.getBoundingClientRect();
+            const w = rect.width - 36;
+            canvas.width = w * dpr;
+            canvas.height = 180 * dpr;
+            canvas.style.width = w + 'px';
+            canvas.style.height = '180px';
+            ctx.scale(dpr, dpr);
+            ctx.clearRect(0, 0, w, 180);
+
+            const isDark = document.body.classList.contains('dark-mode');
+
+            const counts = { again: 0, hard: 0, good: 0, easy: 0 };
+            history.forEach(h => {
+                const name = h.ratingName || (h.rating === 1 ? 'again' : h.rating === 2 ? 'hard' : h.rating === 3 ? 'good' : 'easy');
+                if (counts[name] !== undefined) counts[name]++;
+            });
+
+            const data = [
+                { label: 'Again', value: counts.again, color: '#ef4444' },
+                { label: 'Hard', value: counts.hard, color: '#f59e0b' },
+                { label: 'Good', value: counts.good, color: '#10b981' },
+                { label: 'Easy', value: counts.easy, color: '#3b82f6' }
+            ].filter(d => d.value > 0);
+
+            const total = data.reduce((s, d) => s + d.value, 0);
+            if (total === 0) return;
+
+            const cx = w / 2;
+            const cy = 80;
+            const outerR = 60;
+            const innerR = 35;
+
+            let startAngle = -Math.PI / 2;
+            data.forEach(d => {
+                const sliceAngle = (d.value / total) * Math.PI * 2;
+                ctx.beginPath();
+                ctx.arc(cx, cy, outerR, startAngle, startAngle + sliceAngle);
+                ctx.arc(cx, cy, innerR, startAngle + sliceAngle, startAngle, true);
+                ctx.closePath();
+                ctx.fillStyle = d.color;
+                ctx.fill();
+                startAngle += sliceAngle;
+            });
+
+            // Center text
+            ctx.fillStyle = isDark ? '#d4c8b8' : '#1f2937';
+            ctx.font = 'bold 18px Poppins, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(total, cx, cy - 6);
+            ctx.font = '9px Inter, sans-serif';
+            ctx.fillStyle = isDark ? '#8a7e72' : '#9ca3af';
+            ctx.fillText('reviews', cx, cy + 10);
+
+            // Legend
+            const legendEl = document.getElementById('det-ratings-legend');
+            legendEl.innerHTML = data.map(d =>
+                `<div class="details-legend-item"><div class="details-legend-dot" style="background:${d.color};"></div>${d.label} (${d.value})</div>`
+            ).join('');
+        }
+
+        // --- CHART: Rating Timeline (Scatter/Lollipop) ---
+        function renderTimelineChart(history) {
+            const canvas = document.getElementById('det-chart-timeline');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.parentElement.getBoundingClientRect();
+            const w = rect.width - 36;
+            canvas.width = w * dpr;
+            canvas.height = 180 * dpr;
+            canvas.style.width = w + 'px';
+            canvas.style.height = '180px';
+            ctx.scale(dpr, dpr);
+            ctx.clearRect(0, 0, w, 180);
+
+            const isDark = document.body.classList.contains('dark-mode');
+            const textColor = isDark ? '#8a7e72' : '#9ca3af';
+            const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
+
+            const ratingColors = {
+                1: '#ef4444', // again
+                2: '#f59e0b', // hard
+                3: '#10b981', // good
+                4: '#3b82f6'  // easy
+            };
+            const ratingLabels = { 1: 'Again', 2: 'Hard', 3: 'Good', 4: 'Easy' };
+
+            const padLeft = 45, padRight = 15, padTop = 15, padBottom = 25;
+            const chartW = w - padLeft - padRight;
+            const chartH = 180 - padTop - padBottom;
+
+            // Y-axis labels (rating levels)
+            ctx.font = '9px Inter, sans-serif';
+            ctx.textAlign = 'right';
+            for (let r = 1; r <= 4; r++) {
+                const y = padTop + chartH - ((r - 0.5) / 4) * chartH;
+                // Horizontal grid
+                ctx.strokeStyle = gridColor;
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(padLeft, y);
+                ctx.lineTo(w - padRight, y);
+                ctx.stroke();
+                // Label
+                ctx.fillStyle = ratingColors[r];
+                ctx.fillText(ratingLabels[r], padLeft - 6, y + 3);
+            }
+
+            if (history.length === 0) return;
+
+            // Plot lollipops
+            const step = history.length === 1 ? 0 : chartW / (history.length - 1);
+            history.forEach((h, i) => {
+                const x = padLeft + (history.length === 1 ? chartW / 2 : i * step);
+                const rating = h.rating || 3;
+                const y = padTop + chartH - ((rating - 0.5) / 4) * chartH;
+                const color = ratingColors[rating] || '#10b981';
+
+                // Stem
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 2;
+                ctx.globalAlpha = 0.4;
+                ctx.beginPath();
+                ctx.moveTo(x, padTop + chartH);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                ctx.globalAlpha = 1;
+
+                // Dot
+                ctx.beginPath();
+                ctx.arc(x, y, 5, 0, Math.PI * 2);
+                ctx.fillStyle = color;
+                ctx.fill();
+                ctx.strokeStyle = isDark ? '#1c1917' : '#ffffff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            });
+
+            // X-axis labels
+            ctx.font = '9px Inter, sans-serif';
+            ctx.fillStyle = textColor;
+            ctx.textAlign = 'center';
+            if (history.length <= 5) {
+                history.forEach((h, i) => {
+                    const x = padLeft + (history.length === 1 ? chartW / 2 : i * step);
+                    const label = formatDateDM(h.date);
+                    ctx.fillText(label, x, padTop + chartH + 16);
+                });
+            } else {
+                [0, Math.floor(history.length / 2), history.length - 1].forEach(i => {
+                    const x = padLeft + i * step;
+                    const label = formatDateDM(history[i].date);
+                    ctx.fillText(label, x, padTop + chartH + 16);
+                });
+            }
+        }
+
+        // 'd' key shortcut: open details for keyboard-selected topic
+        document.addEventListener('keydown', function(e) {
+            if (e.key.toLowerCase() === 'd' && !e.ctrlKey && !e.metaKey) {
+                const activeEl = document.activeElement;
+                const isInput = activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.isContentEditable;
+                if (isInput) return;
+
+                const detailsModal = document.getElementById('details-modal');
+                const flashcardModal = document.getElementById('flashcard-modal');
+                const reviewModal = document.getElementById('review-modal');
+                const editModal = document.getElementById('edit-modal');
+
+                const isAnyModalOpen = (flashcardModal && flashcardModal.style.display === 'flex') ||
+                    (reviewModal && reviewModal.style.display === 'flex') ||
+                    (editModal && editModal.style.display === 'flex') ||
+                    (detailsModal && detailsModal.style.display === 'flex');
+                if (isAnyModalOpen) return;
+
+                if (kbSelectedIndex >= 0) {
+                    const topicCards = topicsList.querySelectorAll('.topic-item');
+                    if (topicCards[kbSelectedIndex]) {
+                        const topicId = topicCards[kbSelectedIndex].getAttribute('data-topic-id');
+                        if (topicId) {
+                            e.preventDefault();
+                            openDetailsModal(topicId);
+                        }
+                    }
+                }
+            }
+        });
+
         // --- SCROLL TO TOP ------------------
         (function () {
             const btn = document.getElementById('scroll-to-top');
@@ -5979,6 +6901,425 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
         })();
+
+        // --- VS CODE KEYBOARD SHORTCUTS FOR TEXTAREAS ---
+        (function () {
+            'use strict';
+
+            // --- Helpers ---
+            function getLineInfo(ta) {
+                const val = ta.value, s = ta.selectionStart, e = ta.selectionEnd;
+                const lines = val.split('\n');
+                const sLine = val.substring(0, s).split('\n').length - 1;
+                const eLine = val.substring(0, e).split('\n').length - 1;
+                const lineStart = val.lastIndexOf('\n', s - 1) + 1;
+                return { lines, sLine, eLine, col: s - lineStart, selStart: s, selEnd: e };
+            }
+
+            function applyLines(ta, lines, cursor) {
+                const nv = lines.join('\n');
+                ta.focus(); ta.select();
+                document.execCommand('insertText', false, nv);
+                ta.selectionStart = ta.selectionEnd = cursor;
+                ta.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+
+            function offsetOfLine(lines, idx) {
+                let o = 0;
+                for (let i = 0; i < idx; i++) o += lines[i].length + 1;
+                return o;
+            }
+
+            // --- Alt+Shift+Up/Down: Duplicate Line ---
+            function duplicateLine(ta, dir) {
+                const { lines, sLine, col } = getLineInfo(ta);
+                lines.splice(dir === 'down' ? sLine + 1 : sLine, 0, lines[sLine]);
+                const target = dir === 'down' ? sLine + 1 : sLine;
+                applyLines(ta, lines, offsetOfLine(lines, target) + Math.min(col, lines[target].length));
+            }
+
+            // --- Alt+Up/Down: Move Line ---
+            function moveLine(ta, dir) {
+                const { lines, sLine, col } = getLineInfo(ta);
+                if (dir === 'up' && sLine === 0) return;
+                if (dir === 'down' && sLine >= lines.length - 1) return;
+                const t = dir === 'up' ? sLine - 1 : sLine + 1;
+                [lines[sLine], lines[t]] = [lines[t], lines[sLine]];
+                applyLines(ta, lines, offsetOfLine(lines, t) + Math.min(col, lines[t].length));
+            }
+
+            // --- Ctrl+Shift+K: Delete Line ---
+            function deleteLine(ta) {
+                const { lines, sLine } = getLineInfo(ta);
+                if (lines.length <= 1) { ta.select(); document.execCommand('insertText', false, ''); ta.dispatchEvent(new Event('input', { bubbles: true })); return; }
+                lines.splice(sLine, 1);
+                const ni = Math.min(sLine, lines.length - 1);
+                applyLines(ta, lines, offsetOfLine(lines, ni));
+            }
+
+            // --- Tab / Shift+Tab: Indent / Outdent ---
+            function handleTab(ta, outdent) {
+                const { lines, sLine, eLine, selStart, selEnd } = getLineInfo(ta);
+                if (selStart === selEnd && !outdent) {
+                    document.execCommand('insertText', false, '    ');
+                    ta.dispatchEvent(new Event('input', { bubbles: true }));
+                    return;
+                }
+                for (let i = sLine; i <= eLine; i++) {
+                    if (outdent) {
+                        if (lines[i].startsWith('    ')) lines[i] = lines[i].substring(4);
+                        else if (lines[i].startsWith('\t')) lines[i] = lines[i].substring(1);
+                        else { const m = lines[i].match(/^ {1,3}/); if (m) lines[i] = lines[i].substring(m[0].length); }
+                    } else {
+                        lines[i] = '    ' + lines[i];
+                    }
+                }
+                const newStart = offsetOfLine(lines, sLine);
+                const newEnd = offsetOfLine(lines, eLine) + lines[eLine].length;
+                const nv = lines.join('\n');
+                ta.focus(); ta.select();
+                document.execCommand('insertText', false, nv);
+                ta.selectionStart = newStart; ta.selectionEnd = newEnd;
+                ta.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+
+            // --- Ctrl+Enter: Insert Line Below ---
+            function insertLineBelow(ta) {
+                const { lines, sLine, col } = getLineInfo(ta);
+                lines.splice(sLine + 1, 0, '');
+                applyLines(ta, lines, offsetOfLine(lines, sLine + 1));
+            }
+
+            // --- Ctrl+D: Select Word / Duplicate Selection ---
+            function selectWordOrDuplicate(ta) {
+                const s = ta.selectionStart, e = ta.selectionEnd, val = ta.value;
+                if (s === e) {
+                    let ws = s, we = s;
+                    while (ws > 0 && /\w/.test(val[ws - 1])) ws--;
+                    while (we < val.length && /\w/.test(val[we])) we++;
+                    ta.selectionStart = ws; ta.selectionEnd = we;
+                } else {
+                    const sel = val.substring(s, e);
+                    ta.selectionStart = ta.selectionEnd = e;
+                    document.execCommand('insertText', false, sel);
+                    ta.selectionStart = e; ta.selectionEnd = e + sel.length;
+                    ta.dispatchEvent(new Event('input', { bubbles: true }));
+                }
+            }
+
+            // ============================================================
+            //  MULTI-CURSOR SYSTEM
+            // ============================================================
+            let mcCursors = [];        
+            let mcTextarea = null;     
+            let mcCol = -1;            
+            let mcContainer = null;    
+
+            if (!document.getElementById('mc-style')) {
+                const st = document.createElement('style');
+                st.id = 'mc-style';
+                st.textContent = '@keyframes mcBlink{0%,100%{opacity:1}50%{opacity:0}} .mc-cursor{position:fixed;width:2px;pointer-events:none;animation:mcBlink 1s step-end infinite;z-index:9999;border-radius:1px;}';
+                document.head.appendChild(st);
+            }
+
+            function getCaretCoords(ta, pos) {
+                const mirror = document.createElement('div');
+                const cs = getComputedStyle(ta);
+                ['fontFamily','fontSize','fontWeight','fontStyle','letterSpacing','wordSpacing',
+                 'lineHeight','textIndent','paddingTop','paddingRight','paddingBottom','paddingLeft',
+                 'borderTopWidth','borderRightWidth','borderBottomWidth','borderLeftWidth',
+                 'boxSizing','width','whiteSpace','wordWrap','overflowWrap','tabSize'
+                ].forEach(p => { mirror.style[p] = cs[p]; });
+                mirror.style.position = 'absolute';
+                mirror.style.visibility = 'hidden';
+                mirror.style.whiteSpace = 'pre-wrap';
+                mirror.style.wordWrap = 'break-word';
+                mirror.style.overflow = 'hidden';
+                mirror.style.height = 'auto';
+                mirror.style.left = '-9999px';
+
+                const textBefore = ta.value.substring(0, pos);
+                mirror.appendChild(document.createTextNode(textBefore));
+                const span = document.createElement('span');
+                span.textContent = '\u200b';
+                mirror.appendChild(span);
+                mirror.appendChild(document.createTextNode(ta.value.substring(pos) || '.'));
+                document.body.appendChild(mirror);
+
+                const x = span.offsetLeft, y = span.offsetTop;
+                const h = parseInt(cs.lineHeight) || span.offsetHeight || 20;
+                document.body.removeChild(mirror);
+                return { x, y, height: h };
+            }
+
+            function renderMcCursors() {
+                if (!mcContainer) {
+                    mcContainer = document.createElement('div');
+                    mcContainer.id = 'mc-cursor-container';
+                    document.body.appendChild(mcContainer);
+                }
+                mcContainer.innerHTML = '';
+                
+                if (!mcTextarea || mcCursors.length === 0) {
+                    if (mcTextarea) mcTextarea.style.caretColor = ''; 
+                    return;
+                }
+
+                const ta = mcTextarea;
+                // Hide native caret so we can render our own perfectly synced blinking cursors
+                ta.style.caretColor = 'transparent';
+
+                const rect = ta.getBoundingClientRect();
+                const cs = getComputedStyle(ta);
+                const bT = parseInt(cs.borderTopWidth) || 0;
+                const bL = parseInt(cs.borderLeftWidth) || 0;
+                const sT = ta.scrollTop, sL = ta.scrollLeft;
+                const isDark = document.body.classList.contains('dark-mode');
+
+                // Render ALL cursors including primary
+                const allRenderPos = [ta.selectionStart, ...mcCursors];
+
+                allRenderPos.forEach(pos => {
+                    const c = getCaretCoords(ta, pos);
+                    const fx = rect.left + bL + c.x - sL;
+                    const fy = rect.top + bT + c.y - sT;
+                    if (fy < rect.top + bT || fy + c.height > rect.bottom) return;
+                    const el = document.createElement('div');
+                    el.className = 'mc-cursor';
+                    el.style.left = fx + 'px';
+                    el.style.top = fy + 'px';
+                    el.style.height = c.height + 'px';
+                    el.style.background = isDark ? '#a78bfa' : '#6366f1';
+                    mcContainer.appendChild(el);
+                });
+            }
+
+            function addMcCursor(ta, dir) {
+                const val = ta.value, lines = val.split('\n');
+                if (mcTextarea !== ta) { mcTextarea = ta; mcCursors = []; mcCol = -1; }
+
+                const primary = ta.selectionStart;
+                if (mcCol < 0) {
+                    const ls = val.lastIndexOf('\n', primary - 1) + 1;
+                    mcCol = primary - ls;
+                }
+
+                const allPos = [primary, ...mcCursors];
+                const allLines = allPos.map(p => val.substring(0, p).split('\n').length - 1);
+                const newLine = dir === 'up' ? Math.min(...allLines) - 1 : Math.max(...allLines) + 1;
+                if (newLine < 0 || newLine >= lines.length) return;
+
+                let np = offsetOfLine(lines, newLine) + Math.min(mcCol, lines[newLine].length);
+                if (!allPos.includes(np)) {
+                    mcCursors.push(np);
+                    renderMcCursors();
+                }
+            }
+
+            function exitMc() {
+                if (mcTextarea) mcTextarea.style.caretColor = '';
+                mcCursors = []; mcTextarea = null; mcCol = -1;
+                if (mcContainer) mcContainer.innerHTML = '';
+            }
+
+            function mcApplyKey(ta, key, e) {
+                let all = [ta.selectionStart, ...mcCursors].sort((a, b) => b - a);
+                let val = ta.value;
+
+                if (key === 'ArrowLeft' || key === 'ArrowRight') {
+                    const dir = key === 'ArrowLeft' ? -1 : 1;
+                    all = all.reverse().map(p => Math.max(0, Math.min(val.length, p + dir))).sort((a, b) => b - a);
+                    ta.selectionStart = ta.selectionEnd = all[all.length - 1];
+                    mcCursors = all.slice(0, -1);
+                    mcCol = -1; // Reset memory col
+                } else if (key === 'Backspace') {
+                    all.forEach(p => { if (p > 0) val = val.substring(0, p - 1) + val.substring(p); });
+                    ta.focus(); ta.select(); document.execCommand('insertText', false, val);
+                    const lowest = Math.max(0, Math.min(...all) - 1);
+                    ta.selectionStart = ta.selectionEnd = lowest;
+                    mcCursors = all.slice(0, -1).map((p, i) => Math.max(0, p - 1 - (all.length - 1 - i)));
+                } else if (key === 'Delete') {
+                    all.forEach(p => { if (p < val.length) val = val.substring(0, p) + val.substring(p + 1); });
+                    ta.focus(); ta.select(); document.execCommand('insertText', false, val);
+                    const lowest = Math.min(...all);
+                    ta.selectionStart = ta.selectionEnd = lowest;
+                    mcCursors = all.slice(0, -1).map((p, i) => p - (all.length - 1 - i));
+                } else if (key === 'Enter') {
+                    all.forEach(p => { val = val.substring(0, p) + '\n' + val.substring(p); });
+                    ta.focus(); ta.select(); document.execCommand('insertText', false, val);
+                    const lowest = Math.min(...all) + 1;
+                    ta.selectionStart = ta.selectionEnd = lowest;
+                    mcCursors = all.slice(0, -1).map((p, i) => p + 1 + (all.length - 1 - i));
+                } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                    const ch = e.key;
+                    all.forEach(p => { val = val.substring(0, p) + ch + val.substring(p); });
+                    ta.focus(); ta.select(); document.execCommand('insertText', false, val);
+                    const lowest = Math.min(...all) + 1;
+                    ta.selectionStart = ta.selectionEnd = lowest;
+                    mcCursors = all.slice(0, -1).map((p, i) => p + 1 + (all.length - 1 - i));
+                } else {
+                    return false;
+                }
+
+                ta.dispatchEvent(new Event('input', { bubbles: true }));
+                renderMcCursors();
+                return true;
+            }
+
+            // ============================================================
+            //  MAIN KEYDOWN HANDLER
+            // ============================================================
+            document.addEventListener('keydown', function (e) {
+                const ta = e.target;
+                const alt = e.altKey, shift = e.shiftKey, ctrl = e.ctrlKey || e.metaKey;
+
+                // Ctrl+Up/Down globally switches focus like Tab
+                if (ctrl && !shift && !alt && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
+                    const focusable = Array.from(document.querySelectorAll('input:not([type="hidden"]), textarea, select, button, [tabindex]:not([tabindex="-1"])'))
+                        .filter(el => !el.disabled && el.offsetParent !== null);
+                    const index = focusable.indexOf(ta);
+                    if (index > -1) {
+                        e.preventDefault();
+                        let nextIndex = e.key === 'ArrowDown' ? index + 1 : index - 1;
+                        if (nextIndex >= 0 && nextIndex < focusable.length) {
+                            focusable[nextIndex].focus();
+                            if (focusable[nextIndex].tagName === 'INPUT' || focusable[nextIndex].tagName === 'TEXTAREA') {
+                                focusable[nextIndex].select();
+                            }
+                        }
+                        return;
+                    }
+                }
+
+                if (ta.tagName !== 'TEXTAREA') {
+                    if (e.key === 'Escape' && mcCursors.length > 0) { exitMc(); }
+                    return;
+                }
+
+                // Esc: Exit multi-cursor
+                if (e.key === 'Escape' && mcCursors.length > 0) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    exitMc();
+                    return;
+                }
+
+                // Alt+Ctrl+Up/Down: Add multi-cursor
+                if (alt && ctrl && !shift && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
+                    e.preventDefault();
+                    addMcCursor(ta, e.key === 'ArrowUp' ? 'up' : 'down');
+                    return;
+                }
+
+                // If multi-cursor is active, intercept typing keys and left/right arrows
+                if (mcCursors.length > 0 && mcTextarea === ta) {
+                    if (['Backspace', 'Delete', 'Enter', 'ArrowLeft', 'ArrowRight'].includes(e.key) || (e.key.length === 1 && !ctrl && !alt)) {
+                        e.preventDefault();
+                        mcApplyKey(ta, e.key, e);
+                        return;
+                    }
+                }
+
+                // Alt+Shift+Up/Down: Duplicate line
+                if (alt && shift && !ctrl && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
+                    e.preventDefault();
+                    duplicateLine(ta, e.key === 'ArrowUp' ? 'up' : 'down');
+                    return;
+                }
+
+                // Alt+Up/Down: Move line
+                if (alt && !shift && !ctrl && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
+                    e.preventDefault();
+                    moveLine(ta, e.key === 'ArrowUp' ? 'up' : 'down');
+                    return;
+                }
+
+                // Ctrl+Shift+K: Delete line
+                if (ctrl && shift && !alt && e.key === 'K') {
+                    e.preventDefault();
+                    deleteLine(ta);
+                    return;
+                }
+
+                // Tab / Shift+Tab: Indent / Outdent
+                if (e.key === 'Tab' && !ctrl && !alt) {
+                    e.preventDefault();
+                    handleTab(ta, shift);
+                    return;
+                }
+
+                // Ctrl+D: Select word or duplicate selection
+                if (ctrl && !shift && !alt && e.key === 'd') {
+                    e.preventDefault();
+                    selectWordOrDuplicate(ta);
+                    return;
+                }
+
+                // Ctrl+Enter: Insert line below
+                if (ctrl && !shift && !alt && e.key === 'Enter') {
+                    e.preventDefault();
+                    insertLineBelow(ta);
+                    return;
+                }
+            }, true); // useCapture: true ensures we get the event before modal window listeners
+
+            window.addEventListener('scroll', renderMcCursors, { passive: true, capture: true });
+            window.addEventListener('resize', renderMcCursors, { passive: true });
+            let altClickOldCursors = null;
+
+            document.addEventListener('mousedown', function (e) {
+                if (e.target.tagName === 'TEXTAREA' && e.altKey) {
+                    const ta = e.target;
+                    if (mcTextarea !== ta) {
+                        mcTextarea = ta;
+                        mcCursors = [];
+                    }
+                    // Save existing cursors BEFORE the browser moves the selection
+                    altClickOldCursors = [ta.selectionStart, ...mcCursors];
+                } else if (mcCursors.length > 0) {
+                    exitMc();
+                }
+            }, true);
+
+            document.addEventListener('mouseup', function (e) {
+                if (altClickOldCursors && e.target === mcTextarea) {
+                    const ta = mcTextarea;
+                    const newPos = ta.selectionStart;
+                    ta.selectionEnd = ta.selectionStart; // Force collapsed selection
+                    
+                    let oldWithoutNew = altClickOldCursors.filter(p => p !== newPos);
+                    
+                    if (oldWithoutNew.length === altClickOldCursors.length) {
+                        // User clicked a new spot, add it!
+                        mcCursors = oldWithoutNew;
+                    } else {
+                        // User clicked an existing cursor, remove it!
+                        if (oldWithoutNew.length > 0) {
+                            ta.selectionStart = ta.selectionEnd = oldWithoutNew[0];
+                            mcCursors = oldWithoutNew.slice(1);
+                        } else {
+                            exitMc();
+                            altClickOldCursors = null;
+                            return;
+                        }
+                    }
+                    mcCol = -1;
+                    renderMcCursors();
+                }
+                altClickOldCursors = null;
+            }, true);
+        })();
+    </script>
+
+    <!-- Service Worker Registration for Offline Capability -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('[FocusFlow] Service Worker registered:', reg.scope))
+                    .catch(err => console.warn('[FocusFlow] Service Worker registration failed:', err));
+            });
+        }
     </script>
 </body>
 

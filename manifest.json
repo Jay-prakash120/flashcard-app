@@ -1,0 +1,17 @@
+{
+  "name": "FocusFlow",
+  "short_name": "FocusFlow",
+  "description": "Spaced Repetition & Offline Study Flashcard App",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f3f4f6",
+  "theme_color": "#6366f1",
+  "icons": [
+    {
+      "src": "./11053193.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

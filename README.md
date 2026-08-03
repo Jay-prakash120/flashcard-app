@@ -28,27 +28,17 @@ FocusFlow is a premium, single-file web application for creating, managing, and 
 - **Rich answer formatting** — code-editor-style textarea with monospace font for answers
 
 ### 🧠 Spaced Repetition Engine
-- SM-2-inspired review intervals: **Again** (1 day), **Hard** (3 days), **Good** (7 days), **Easy** (14 days)
-- Automatic scheduling of next review dates
-- Topics sorted by priority — due items appear first
-- Visual indicators for review status: **Due**, **Due Today**, **Mastered**
-- Overall mastery progress bar
+- **SM-2-inspired review algorithm**: Dynamic Ease Factor (EF) calculation based on ratings: **Again** (1 day), **Hard** (3 days), **Good** (7 days), **Easy** (14 days)
+- **Interval Explosion Guard**: Enforces a strict 365-day maximum review interval cap for long-term retention stability
+- **Priority Sorting**: Topics automatically sorted by urgency — overdue items appear first
+- **Visual Status Tracking**: Real-time status badges for **Due**, **Due Today**, and **Mastered** topics
+- **Mastery Queue Management**: Integrated cleanup and review workflows for mastered flashcards and topics
+- **Overall Progress Dashboard**: Real-time progress bar reflecting global user mastery percentage
 
-### 🔥 Streak System
-- **Daily streak tracking** — complete all due reviews to maintain your streak
-- **Weekly activity tracker** — visual day-by-day circle indicators
-- **Longest streak record** with trophy display
-- **Milestone celebrations** — animated banner, fireworks, and glow effects for streak achievements
-- **Motivational messages** that update based on your current streak
-
-### 🎨 Premium Design
-- **Light & Dark mode** — warm charcoal dark theme with smooth transitions
-- **Glassmorphism & gradients** — modern visual design with depth and layering
-- **Micro-animations** — bounce effects, slide-ins, glow pulses, fire particle animations
-- **Syntax highlighting** — code blocks rendered with [Highlight.js](https://highlightjs.org/) (Atom One Dark theme)
-- **Custom content renderer** — inline code highlights, fenced code blocks, structured lists, and clickable link blocks (see [Formatting Guide](#-content-formatting-guide) below)
-- **Responsive layout** — works on desktop and mobile
-- **Custom scrollbars** and text selection colors
+### 📱 PWA & Offline Support
+- **Service Worker Caching**: Powered by `sw.js` for instant asset loading and full offline capability
+- **Web App Manifest**: `manifest.json` included for one-click installation on desktop and mobile devices
+- **Offline Resilience**: Complete local execution via browser `localStorage` with automated Gist cloud sync queueing when back online
 
 ### ⌨️ Keyboard Shortcuts
 
@@ -58,16 +48,19 @@ FocusFlow is a premium, single-file web application for creating, managing, and 
 | `Space` | Flashcard modal | Flip the current card |
 | `↑` / `↓` | Flashcard modal | Scroll card content |
 | `↑` / `↓` / `←` / `→` | Home page | Grid-navigate topic cards |
+| `Ctrl + ↑` / `Ctrl + ↓` | Form inputs / Editors | Seamless navigation between input fields |
 | `Enter` | Home page (with selection) | Open flashcards or review for selected topic |
 | `r` | Flashcard modal | Switch to review mode |
+| `d` | Home page / Topic card | Open topic action dropdown menu |
 | `a` or `n` | Home page | Scroll to top & focus topic title input |
 | `t` | Home page | Scroll to top |
 | `b` | Home page | Scroll to bottom |
 | `Escape` | Any modal / selection | Close current modal or clear selection |
+| `Ctrl + Escape` | Any modal | Close modal while preserving current focus |
 | `Ctrl + S` | Any editor context | Save (inline edit, topic edit, or new topic) |
 | `Ctrl + E` | Flashcard / Review modal | Edit current card / open topic editor |
 | `Ctrl + Shift + E` | Flashcard modal | Open full topic editor |
-| `Ctrl + [1-9]` | Topic form / Edit modal | Add N new flashcards |
+| `Ctrl + [1-9]` | Topic form / Edit modal | Add N new flashcards at once |
 | `1` / `2` / `3` / `4` | Review modal | Select rating (Again / Hard / Good / Easy) |
 
 ### ☁️ Cloud Backup (GitHub Gist)
