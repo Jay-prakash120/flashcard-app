@@ -4887,8 +4887,10 @@
                         interval: t.interval || 0,
                         nextReview: t.nextReview || '',
                         lastReviewed: t.lastReviewed || '',
+                        updatedAt: t.updatedAt || '',
                         easeFactor: t.easeFactor || 0,
-                        flashcards: (t.flashcards || []).map(f => f.front + '|' + f.back).join(';;')
+                        historyLen: (t.reviewHistory || []).length,
+                        flashcards: (t.flashcards || []).map(f => (f.front || '') + '|' + (f.back || '')).join(';;')
                     })).sort((a, b) => String(a.id).localeCompare(String(b.id))),
                     streak: {
                         currentStreak: (data.streakData || {}).currentStreak || 0,
@@ -5000,17 +5002,51 @@
                 } else if (cloud && !local) {
                     merged.topics.push(cloud);
                 } else {
-                    // Both exist — keep the one with more reviews,
-                    // or if tied, the one modified more recently
-                    const lr = local.reviewCount || 0;
-                    const cr = cloud.reviewCount || 0;
-                    if (lr !== cr) {
-                        merged.topics.push(lr > cr ? local : cloud);
+                    // 1. Content (title, description, difficulty, flashcards) -> latest edit wins
+                    const localContentTime = new Date(local.updatedAt || local.createdAt || 0).getTime();
+                    const cloudContentTime = new Date(cloud.updatedAt || cloud.createdAt || 0).getTime();
+                    const contentSource = cloudContentTime > localContentTime ? cloud : local;
+
+                    // 2. Review Progress (interval, easeFactor, nextReview, reviewCount, lastReviewed)
+                    // -> latest review wins (by lastReviewed timestamp or review history)
+                    const localReviewTime = new Date(local.lastReviewed || 0).getTime();
+                    const cloudReviewTime = new Date(cloud.lastReviewed || 0).getTime();
+
+                    let reviewSource;
+                    if (localReviewTime !== cloudReviewTime) {
+                        reviewSource = cloudReviewTime > localReviewTime ? cloud : local;
+                    } else if ((local.reviewCount || 0) !== (cloud.reviewCount || 0)) {
+                        reviewSource = (cloud.reviewCount || 0) > (local.reviewCount || 0) ? cloud : local;
                     } else {
-                        const lt = new Date(local.updatedAt || local.lastReviewed || local.createdAt || 0);
-                        const ct = new Date(cloud.updatedAt || cloud.lastReviewed || cloud.createdAt || 0);
-                        merged.topics.push(ct > lt ? cloud : local);
+                        reviewSource = local;
                     }
+
+                    // 3. Union review histories
+                    const localHist = Array.isArray(local.reviewHistory) ? local.reviewHistory : [];
+                    const cloudHist = Array.isArray(cloud.reviewHistory) ? cloud.reviewHistory : [];
+                    const histMap = new Map();
+                    [...localHist, ...cloudHist].forEach(h => {
+                        if (h && h.date) histMap.set(h.date, h);
+                    });
+                    const mergedHist = Array.from(histMap.values()).sort((a, b) => new Date(a.date) - new Date(b.date));
+
+                    const mergedTopic = {
+                        id: local.id,
+                        title: contentSource.title,
+                        description: contentSource.description,
+                        difficulty: contentSource.difficulty,
+                        flashcards: contentSource.flashcards || [],
+                        createdAt: local.createdAt || cloud.createdAt || new Date().toISOString(),
+                        updatedAt: contentSource.updatedAt || local.updatedAt || cloud.updatedAt || null,
+                        reviewCount: reviewSource.reviewCount || 0,
+                        interval: reviewSource.interval || 1,
+                        easeFactor: reviewSource.easeFactor || 2.5,
+                        nextReview: reviewSource.nextReview,
+                        lastReviewed: reviewSource.lastReviewed || null,
+                        reviewHistory: mergedHist
+                    };
+
+                    merged.topics.push(mergedTopic);
                 }
             }
 
