@@ -3822,11 +3822,16 @@
             if (isNaN(d)) return '—';
             return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
         }
+        function formatTime12(dateInput) {
+            const d = new Date(dateInput);
+            if (isNaN(d)) return '—';
+            return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+        }
         function formatDateTimeDMY(dateInput) {
             const d = new Date(dateInput);
             if (isNaN(d)) return '—';
             return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
-                + ', ' + d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+                + ', ' + formatTime12(d);
         }
 
         // Tracks when local data was actually last changed (not when it was read)
@@ -6593,7 +6598,7 @@
                 tbody.innerHTML = history.slice().reverse().map((h, i) => {
                     const num = history.length - i;
                     const dateStr = formatDateDMY(h.date);
-                    const timeStr = new Date(h.date).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+                    const timeStr = formatTime12(h.date);
                     const ratingClass = 'rating-' + (h.ratingName || 'good');
                     const ratingLabel = (h.ratingName || 'unknown').charAt(0).toUpperCase() + (h.ratingName || 'unknown').slice(1);
                     const diffColor = h.difficulty === 'easy' ? '#10b981' : (h.difficulty === 'hard' ? '#ef4444' : '#f59e0b');
