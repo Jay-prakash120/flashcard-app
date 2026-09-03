@@ -7216,19 +7216,16 @@
                 const ta = e.target;
                 const alt = e.altKey, shift = e.shiftKey, ctrl = e.ctrlKey || e.metaKey;
 
-                // Ctrl+Up/Down globally switches focus like Tab
+                // Ctrl+Up/Down switches focus between text blocks (Question & Answer fields, etc.)
                 if (ctrl && !shift && !alt && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
-                    const focusable = Array.from(document.querySelectorAll('input:not([type="hidden"]), textarea, select, button, [tabindex]:not([tabindex="-1"])'))
-                        .filter(el => !el.disabled && el.offsetParent !== null);
-                    const index = focusable.indexOf(ta);
+                    const textBlocks = Array.from(document.querySelectorAll('input:not([type="hidden"]):not([type="button"]):not([type="submit"]):not([type="checkbox"]):not([type="radio"]), textarea, [contenteditable="true"]'))
+                        .filter(el => !el.disabled && el.offsetParent !== null && el.getAttribute('tabindex') !== '-1');
+                    const index = textBlocks.indexOf(ta);
                     if (index > -1) {
                         e.preventDefault();
                         let nextIndex = e.key === 'ArrowDown' ? index + 1 : index - 1;
-                        if (nextIndex >= 0 && nextIndex < focusable.length) {
-                            focusable[nextIndex].focus();
-                            if (focusable[nextIndex].tagName === 'INPUT' || focusable[nextIndex].tagName === 'TEXTAREA') {
-                                focusable[nextIndex].select();
-                            }
+                        if (nextIndex >= 0 && nextIndex < textBlocks.length) {
+                            textBlocks[nextIndex].focus();
                         }
                         return;
                     }
