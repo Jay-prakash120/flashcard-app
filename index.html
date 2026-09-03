@@ -596,6 +596,257 @@
             opacity: 1;
         }
 
+        /* ═══ TOPIC POSITION BY TIME — Windows Alarm-Style Modal ═══ */
+        .tp-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .tp-overlay.show { display: flex; }
+
+        .tp-modal {
+            background: #1e1e1e;
+            color: #e8e8e8;
+            width: 100%;
+            max-width: 420px;
+            border-radius: 14px;
+            padding: 28px 24px 24px;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06);
+            font-family: 'Segoe UI', 'Inter', sans-serif;
+            animation: tpSlideIn 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+            max-height: 90vh;
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
+        .tp-modal::-webkit-scrollbar { display: none; }
+        @keyframes tpSlideIn {
+            from { opacity: 0; transform: translateY(18px) scale(0.97); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .tp-modal-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+        .tp-modal-head h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin: 0;
+        }
+        .tp-close-x {
+            background: none; border: none;
+            color: #888; font-size: 1.3rem;
+            cursor: pointer; padding: 4px 6px;
+            border-radius: 6px; line-height: 1;
+            transition: all 0.15s;
+        }
+        .tp-close-x:hover { color: #fff; background: #333; }
+
+        .tp-due-tag {
+            background: rgba(16,185,129,0.12);
+            color: #34d399;
+            border: 1px solid rgba(16,185,129,0.25);
+            padding: 7px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+        .tp-due-tag strong { color: #6ee7b7; }
+
+        .tp-group { margin-bottom: 20px; }
+        .tp-group-label {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #bbb;
+            margin-bottom: 10px;
+            display: block;
+            letter-spacing: 0.02em;
+        }
+
+        /* ── Scroll-wheel shared ── */
+        .tp-wheel-frame {
+            background: #2a2a2a;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            border-bottom: 3px solid #10b981;
+        }
+        .tp-wheel-frame::before,
+        .tp-wheel-frame::after {
+            content: '';
+            position: absolute;
+            left: 0; right: 0;
+            height: 28px;
+            pointer-events: none;
+            z-index: 2;
+        }
+        .tp-wheel-frame::before {
+            top: 0;
+            background: linear-gradient(to bottom, #2a2a2a 10%, transparent);
+        }
+        .tp-wheel-frame::after {
+            bottom: 3px;
+            background: linear-gradient(to top, #2a2a2a 10%, transparent);
+        }
+
+        .tp-wheel {
+            height: 130px;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
+            scrollbar-width: none;
+            padding: 44px 0;
+        }
+        .tp-wheel::-webkit-scrollbar { display: none; }
+
+        .tp-wheel-item {
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            scroll-snap-align: center;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #555;
+            cursor: pointer;
+            transition: color 0.18s, transform 0.18s, font-size 0.18s;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .tp-wheel-item.active {
+            color: #ffffff;
+            font-size: 1.7rem;
+            font-weight: 700;
+            transform: scale(1.05);
+        }
+
+        /* ── Position picker (single wheel) ── */
+        .tp-pos-picker { max-width: 140px; }
+
+        /* ── Time pickers row ── */
+        .tp-time-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        .tp-time-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .tp-time-sublabel {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #888;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+        .tp-time-wheels {
+            display: flex;
+            gap: 3px;
+        }
+        .tp-time-wheels .tp-wheel-frame { flex: 1; }
+        .tp-time-sep-col {
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #555;
+            padding-top: 24px;
+        }
+
+        /* ── Footer buttons ── */
+        .tp-footer {
+            display: flex;
+            gap: 10px;
+            margin-top: 22px;
+        }
+        .tp-btn-save {
+            flex: 1;
+            background: #10b981;
+            color: #000;
+            border: none;
+            padding: 11px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.92rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            transition: all 0.2s;
+        }
+        .tp-btn-save:hover { background: #059669; color: #fff; }
+
+        .tp-btn-cancel {
+            flex: 1;
+            background: #333;
+            color: #ddd;
+            border: none;
+            padding: 11px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.92rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            transition: all 0.2s;
+        }
+        .tp-btn-cancel:hover { background: #444; }
+
+        .tp-btn-remove {
+            background: #dc2626;
+            color: #fff;
+            border: none;
+            padding: 11px 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.92rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .tp-btn-remove:hover { background: #b91c1c; }
+
+        /* ── Badge on topic card ── */
+        .tp-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(16,185,129,0.12);
+            color: #10b981;
+            border: 1px solid rgba(16,185,129,0.3);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-left: 6px;
+        }
+
+
         * {
             margin: 0;
             padding: 0;
@@ -3777,6 +4028,63 @@
         </div>
     </div>
 
+    <!-- Topic Position by Time Modal -->
+    <div class="tp-overlay" id="tp-overlay">
+        <div class="tp-modal">
+            <div class="tp-modal-head">
+                <h3><i class="fas fa-clock" style="color: #10b981; margin-right: 6px;"></i>Position</h3>
+                <button class="tp-close-x" onclick="closeTPModal()">&times;</button>
+            </div>
+
+            <div class="tp-due-tag">
+                <i class="fas fa-info-circle"></i> If topic is <strong>DUE</strong> then
+            </div>
+
+            <!-- Set Position -->
+            <div class="tp-group">
+                <label class="tp-group-label">Set Position :</label>
+                <div class="tp-wheel-frame tp-pos-picker">
+                    <div class="tp-wheel" id="tp-pos-wheel"></div>
+                </div>
+            </div>
+
+            <!-- Time Duration -->
+            <div class="tp-group">
+                <label class="tp-group-label">At time duration :</label>
+                <div class="tp-time-row">
+                    <!-- Start -->
+                    <div class="tp-time-col">
+                        <span class="tp-time-sublabel">Start</span>
+                        <div class="tp-time-wheels">
+                            <div class="tp-wheel-frame"><div class="tp-wheel" id="tp-sh-wheel"></div></div>
+                            <div class="tp-wheel-frame"><div class="tp-wheel" id="tp-sm-wheel"></div></div>
+                            <div class="tp-wheel-frame"><div class="tp-wheel" id="tp-sa-wheel"></div></div>
+                        </div>
+                    </div>
+
+                    <div class="tp-time-sep-col">to</div>
+
+                    <!-- End -->
+                    <div class="tp-time-col">
+                        <span class="tp-time-sublabel">End</span>
+                        <div class="tp-time-wheels">
+                            <div class="tp-wheel-frame"><div class="tp-wheel" id="tp-eh-wheel"></div></div>
+                            <div class="tp-wheel-frame"><div class="tp-wheel" id="tp-em-wheel"></div></div>
+                            <div class="tp-wheel-frame"><div class="tp-wheel" id="tp-ea-wheel"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="tp-footer">
+                <button class="tp-btn-save" onclick="saveTPRule()"><i class="fas fa-save"></i> Save</button>
+                <button class="tp-btn-cancel" onclick="closeTPModal()"><i class="fas fa-times"></i> Cancel</button>
+                <button class="tp-btn-remove" id="tp-remove-btn" onclick="removeTPRule()" style="display:none;"><i class="fas fa-trash-alt"></i> Remove</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Scroll to Top Button -->
     <button class="scroll-to-top" id="scroll-to-top" aria-label="Scroll to top">
         <i class="fas fa-arrow-up"></i>
@@ -3922,6 +4230,9 @@
             }
             startPeriodicSync();
 
+            // Re-evaluate topic time-position rules every 60 seconds
+            setInterval(() => { renderTopics(); }, 60000);
+
             // Form submission
             topicForm.addEventListener('submit', function (e) {
                 e.preventDefault();
@@ -3950,6 +4261,12 @@
                         document.getElementById('btn-delete-topic')?.focus();
                         return;
                     }
+                }
+
+                // Close topic position modal on Escape
+                const tpOvl = document.getElementById('tp-overlay');
+                if (tpOvl && tpOvl.classList.contains('show')) {
+                    if (e.key === 'Escape') { e.preventDefault(); closeTPModal(); return; }
                 }
 
                 // --- Ctrl+Escape Key (close editing windows) ---
@@ -5890,20 +6207,225 @@
             clearDraft();
         }
 
+        // ═══ TOPIC POSITION BY TIME — Core Logic ═══
+        let _tpTopicId = null;
+
+        function getActiveTimePosition(topic) {
+            if (!topic || !topic.timePosition || !topic.timePosition.enabled) return null;
+            if (!isDueForReview(topic.nextReview)) return null;
+            const now = new Date();
+            const curMins = now.getHours() * 60 + now.getMinutes();
+            const [sH, sM] = (topic.timePosition.startTime || '00:00').split(':').map(Number);
+            const [eH, eM] = (topic.timePosition.endTime || '23:59').split(':').map(Number);
+            const sMins = (isNaN(sH) ? 0 : sH) * 60 + (isNaN(sM) ? 0 : sM);
+            const eMins = (isNaN(eH) ? 23 : eH) * 60 + (isNaN(eM) ? 59 : eM);
+            let active = sMins <= eMins
+                ? (curMins >= sMins && curMins <= eMins)
+                : (curMins >= sMins || curMins <= eMins); // overnight
+            if (active) {
+                const p = parseInt(topic.timePosition.position, 10);
+                return isNaN(p) || p < 1 ? 1 : p;
+            }
+            return null;
+        }
+
+        // ── Wheel builder ──
+        function _tpBuildWheel(container, items, selectedVal, onSelect) {
+            // Remove old scroll listeners by cloning
+            const fresh = container.cloneNode(false);
+            container.parentNode.replaceChild(fresh, container);
+            container = fresh;
+
+            const ITEM_H = 42;
+            const PAD_TOP = 44; // matches CSS padding-top on .tp-wheel
+
+            items.forEach((item, i) => {
+                const el = document.createElement('div');
+                el.className = 'tp-wheel-item' + (item.value == selectedVal ? ' active' : '');
+                el.textContent = item.label;
+                el.addEventListener('click', () => {
+                    onSelect(item.value);
+                    _tpHighlightWheel(container, item.value, items);
+                    container.scrollTo({ top: i * ITEM_H, behavior: 'smooth' });
+                });
+                container.appendChild(el);
+            });
+
+            // Scroll to selected — double rAF ensures layout is ready
+            const idx = items.findIndex(it => it.value == selectedVal);
+            if (idx >= 0) {
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        container.scrollTo({ top: idx * ITEM_H, behavior: 'auto' });
+                    });
+                });
+            }
+
+            // On scroll stop → snap highlight to nearest centre item
+            let scrollTimer;
+            container.addEventListener('scroll', () => {
+                clearTimeout(scrollTimer);
+                scrollTimer = setTimeout(() => {
+                    const scrollTop = container.scrollTop;
+                    const centerOffset = container.clientHeight / 2;
+                    const nearIdx = Math.round((scrollTop + centerOffset - PAD_TOP - ITEM_H / 2) / ITEM_H);
+                    const clamped = Math.max(0, Math.min(nearIdx, items.length - 1));
+                    _tpHighlightWheel(container, items[clamped].value, items);
+                    onSelect(items[clamped].value);
+                }, 80);
+            }, { passive: true });
+        }
+
+        function _tpHighlightWheel(container, val, items) {
+            const children = container.children;
+            for (let i = 0; i < children.length; i++) {
+                children[i].classList.toggle('active', items[i].value == val);
+            }
+        }
+
+        // ── State holders for picker values ──
+        let _tpState = { pos: 1, sh: 6, sm: 0, sa: 'AM', eh: 8, em: 0, ea: 'AM' };
+
+        function _tp12to24(h12, ampm) {
+            let h = h12 % 12;
+            if (ampm === 'PM') h += 12;
+            return h;
+        }
+        function _tp24to12(h24) {
+            const ap = h24 >= 12 ? 'PM' : 'AM';
+            let h = h24 % 12;
+            if (h === 0) h = 12;
+            return { h, ap };
+        }
+        function _tpPad(n) { return n < 10 ? '0' + n : '' + n; }
+
+        function _tpPopulateAll() {
+            const posItems = [];
+            for (let i = 1; i <= 99; i++) posItems.push({ value: i, label: '' + i });
+            _tpBuildWheel(document.getElementById('tp-pos-wheel'), posItems, _tpState.pos, v => { _tpState.pos = v; });
+
+            const hourItems = [];
+            for (let i = 1; i <= 12; i++) hourItems.push({ value: i, label: _tpPad(i) });
+            const minItems = [];
+            for (let i = 0; i < 60; i++) minItems.push({ value: i, label: _tpPad(i) });
+            const apItems = [{ value: 'AM', label: 'AM' }, { value: 'PM', label: 'PM' }];
+
+            _tpBuildWheel(document.getElementById('tp-sh-wheel'), hourItems, _tpState.sh, v => { _tpState.sh = v; });
+            _tpBuildWheel(document.getElementById('tp-sm-wheel'), minItems, _tpState.sm, v => { _tpState.sm = v; });
+            _tpBuildWheel(document.getElementById('tp-sa-wheel'), apItems, _tpState.sa, v => { _tpState.sa = v; });
+
+            _tpBuildWheel(document.getElementById('tp-eh-wheel'), hourItems, _tpState.eh, v => { _tpState.eh = v; });
+            _tpBuildWheel(document.getElementById('tp-em-wheel'), minItems, _tpState.em, v => { _tpState.em = v; });
+            _tpBuildWheel(document.getElementById('tp-ea-wheel'), apItems, _tpState.ea, v => { _tpState.ea = v; });
+        }
+
+        function openTPModal(topicId) {
+            _tpTopicId = topicId;
+            const topic = topics.find(t => t.id === topicId);
+            if (!topic) return;
+            const tp = topic.timePosition || { enabled: false, position: 1, startTime: '06:00', endTime: '08:00' };
+
+            _tpState.pos = tp.position || 1;
+
+            const [sH24, sM] = (tp.startTime || '06:00').split(':').map(Number);
+            const sp = _tp24to12(isNaN(sH24) ? 6 : sH24);
+            _tpState.sh = sp.h; _tpState.sm = isNaN(sM) ? 0 : sM; _tpState.sa = sp.ap;
+
+            const [eH24, eM] = (tp.endTime || '08:00').split(':').map(Number);
+            const ep = _tp24to12(isNaN(eH24) ? 8 : eH24);
+            _tpState.eh = ep.h; _tpState.em = isNaN(eM) ? 0 : eM; _tpState.ea = ep.ap;
+
+            _tpPopulateAll();
+
+            const removeBtn = document.getElementById('tp-remove-btn');
+            if (removeBtn) removeBtn.style.display = (tp.enabled) ? 'flex' : 'none';
+
+            document.getElementById('tp-overlay').classList.add('show');
+        }
+
+        function closeTPModal() {
+            document.getElementById('tp-overlay')?.classList.remove('show');
+            _tpTopicId = null;
+        }
+
+        function saveTPRule() {
+            if (!_tpTopicId) return;
+            const topic = topics.find(t => t.id === _tpTopicId);
+            if (!topic) return;
+            const startH24 = _tp12to24(_tpState.sh, _tpState.sa);
+            const endH24 = _tp12to24(_tpState.eh, _tpState.ea);
+            topic.timePosition = {
+                enabled: true,
+                position: _tpState.pos,
+                startTime: _tpPad(startH24) + ':' + _tpPad(_tpState.sm),
+                endTime: _tpPad(endH24) + ':' + _tpPad(_tpState.em)
+            };
+            saveTopics();
+            renderTopics();
+            closeTPModal();
+            showBackupToast('Position rule saved!');
+        }
+
+        function removeTPRule() {
+            if (!_tpTopicId) return;
+            const topic = topics.find(t => t.id === _tpTopicId);
+            if (!topic) return;
+            topic.timePosition = { enabled: false };
+            saveTopics();
+            renderTopics();
+            closeTPModal();
+            showBackupToast('Position rule removed');
+        }
+
+        // ═══ RENDER TOPICS (with Time-Position sorting) ═══
         function renderTopics() {
             if (topics.length === 0) {
                 topicsList.innerHTML = `<div class="empty-state"><i class="fas fa-layer-group"></i><h3>Your library is empty</h3><p>Add your first topic above.</p></div>`;
                 return;
             }
 
+            // Standard date sort
             topics.sort((a, b) => new Date(a.nextReview) - new Date(b.nextReview));
+
+            // Separate time-positioned DUE topics from normal
+            const positioned = [];
+            const normal = [];
+            topics.forEach(t => {
+                const activePos = getActiveTimePosition(t);
+                if (activePos !== null) {
+                    positioned.push({ topic: t, pos: activePos });
+                } else {
+                    normal.push(t);
+                }
+            });
+
+            // Sort positioned by requested index
+            positioned.sort((a, b) => a.pos - b.pos);
+
+            // Merge: insert positioned topics at their requested indices
+            const merged = [...normal];
+            positioned.forEach(({ topic, pos }) => {
+                const idx = Math.min(pos - 1, merged.length);
+                merged.splice(idx, 0, topic);
+            });
+
             topicsList.innerHTML = '';
 
-            topics.forEach(topic => {
+            merged.forEach(topic => {
                 const dueForReview = isDueForReview(topic.nextReview);
                 const masteryGoal = 10;
                 const progressPercent = Math.min((topic.reviewCount / masteryGoal) * 100, 100);
                 const hasFlashcards = topic.flashcards && topic.flashcards.length > 0;
+
+                // Time-position badge
+                const activePos = getActiveTimePosition(topic);
+                const tpBadgeHTML = activePos !== null
+                    ? `<span class="tp-badge"><i class="fas fa-clock"></i> Pos ${activePos}</span>`
+                    : '';
+                const tpHasSaved = topic.timePosition && topic.timePosition.enabled;
+                const tpSavedBadge = (tpHasSaved && activePos === null)
+                    ? `<span class="tp-badge" style="opacity:0.5;"><i class="fas fa-clock"></i> Scheduled</span>`
+                    : '';
 
                 const topicElement = document.createElement('div');
                 topicElement.className = `topic-item ${dueForReview ? 'review-due' : ''}`;
@@ -5911,11 +6433,12 @@
 
                 topicElement.innerHTML = `
                     <div class="topic-header">
-                        <div class="topic-title">${topic.title}</div>
+                        <div class="topic-title">${topic.title}${tpBadgeHTML}${tpSavedBadge}</div>
                         <div class="topic-menu">
                             <button class="menu-btn"><i class="fas fa-ellipsis-v"></i></button>
                             <div class="menu-dropdown">
                                 <div class="menu-item" onclick="openDetailsModal('${topic.id}')"><i class="fas fa-chart-line"></i> Details</div>
+                                <div class="menu-item" onclick="openTPModal('${topic.id}')"><i class="fas fa-clock"></i> Position</div>
                                 <div class="menu-item edit-item" onclick="openEditModal('${topic.id}')"><i class="fas fa-edit"></i> Edit</div>
                                 <div class="menu-item delete delete-item" onclick="deleteTopic('${topic.id}')"><i class="fas fa-trash"></i> Delete</div>
                             </div>
