@@ -4230,8 +4230,8 @@
             }
             startPeriodicSync();
 
-            // Re-evaluate topic time-position rules every 60 seconds
-            setInterval(() => { renderTopics(); }, 60000);
+            // Schedule precise re-renders at time-position boundaries
+            _tpScheduleTimers();
 
             // Form submission
             topicForm.addEventListener('submit', function (e) {
@@ -5212,7 +5212,8 @@
                         updatedAt: t.updatedAt || '',
                         easeFactor: t.easeFactor || 0,
                         historyLen: (t.reviewHistory || []).length,
-                        flashcards: (t.flashcards || []).map(f => (f.front || '') + '|' + (f.back || '')).join(';;')
+                        flashcards: (t.flashcards || []).map(f => (f.front || '') + '|' + (f.back || '')).join(';;'),
+                        timePosition: JSON.stringify(t.timePosition || {})
                     })).sort((a, b) => String(a.id).localeCompare(String(b.id))),
                     streak: {
                         currentStreak: (data.streakData || {}).currentStreak || 0,
@@ -5365,7 +5366,8 @@
                         easeFactor: reviewSource.easeFactor || 2.5,
                         nextReview: reviewSource.nextReview,
                         lastReviewed: reviewSource.lastReviewed || null,
-                        reviewHistory: mergedHist
+                        reviewHistory: mergedHist,
+                        timePosition: contentSource.timePosition || local.timePosition || cloud.timePosition || undefined
                     };
 
                     merged.topics.push(mergedTopic);
@@ -6319,6 +6321,51 @@
             _tpBuildWheel(document.getElementById('tp-ea-wheel'), apItems, _tpState.ea, v => { _tpState.ea = v; });
         }
 
+        // ── Precise timers for position rule boundaries ──
+        let _tpTimerIds = [];
+
+        function _tpScheduleTimers() {
+            // Clear any existing timers
+            _tpTimerIds.forEach(id => clearTimeout(id));
+            _tpTimerIds = [];
+
+            const now = new Date();
+            const nowMins = now.getHours() * 60 + now.getMinutes();
+            const nowMs = now.getTime();
+
+            // Collect all unique boundary times from enabled rules
+            const boundaries = new Set();
+
+            topics.forEach(t => {
+                if (!t.timePosition || !t.timePosition.enabled) return;
+
+                const [sH, sM] = (t.timePosition.startTime || '00:00').split(':').map(Number);
+                const [eH, eM] = (t.timePosition.endTime || '23:59').split(':').map(Number);
+                const startMins = (isNaN(sH) ? 0 : sH) * 60 + (isNaN(sM) ? 0 : sM);
+                const endMins = (isNaN(eH) ? 23 : eH) * 60 + (isNaN(eM) ? 59 : eM);
+
+                boundaries.add(startMins);
+                boundaries.add(endMins + 1); // +1 so we re-render right after end
+            });
+
+            // Set a setTimeout for each boundary that's still ahead today
+            boundaries.forEach(bMins => {
+                let delayMins = bMins - nowMins;
+                if (delayMins <= 0) return; // already passed today
+
+                // Convert to ms, subtract the seconds/ms already elapsed in current minute
+                const delayMs = delayMins * 60000 - (now.getSeconds() * 1000 + now.getMilliseconds());
+                if (delayMs <= 0) return;
+
+                const id = setTimeout(() => {
+                    renderTopics();
+                    // Re-schedule remaining timers after this one fires
+                    _tpScheduleTimers();
+                }, delayMs);
+                _tpTimerIds.push(id);
+            });
+        }
+
         function openTPModal(topicId) {
             _tpTopicId = topicId;
             const topic = topics.find(t => t.id === topicId);
@@ -6362,6 +6409,7 @@
             };
             saveTopics();
             renderTopics();
+            _tpScheduleTimers();
             closeTPModal();
             showBackupToast('Position rule saved!');
         }
@@ -6373,6 +6421,7 @@
             topic.timePosition = { enabled: false };
             saveTopics();
             renderTopics();
+            _tpScheduleTimers();
             closeTPModal();
             showBackupToast('Position rule removed');
         }
@@ -6417,23 +6466,13 @@
                 const progressPercent = Math.min((topic.reviewCount / masteryGoal) * 100, 100);
                 const hasFlashcards = topic.flashcards && topic.flashcards.length > 0;
 
-                // Time-position badge
-                const activePos = getActiveTimePosition(topic);
-                const tpBadgeHTML = activePos !== null
-                    ? `<span class="tp-badge"><i class="fas fa-clock"></i> Pos ${activePos}</span>`
-                    : '';
-                const tpHasSaved = topic.timePosition && topic.timePosition.enabled;
-                const tpSavedBadge = (tpHasSaved && activePos === null)
-                    ? `<span class="tp-badge" style="opacity:0.5;"><i class="fas fa-clock"></i> Scheduled</span>`
-                    : '';
-
                 const topicElement = document.createElement('div');
                 topicElement.className = `topic-item ${dueForReview ? 'review-due' : ''}`;
                 topicElement.setAttribute('data-topic-id', topic.id);
 
                 topicElement.innerHTML = `
                     <div class="topic-header">
-                        <div class="topic-title">${topic.title}${tpBadgeHTML}${tpSavedBadge}</div>
+                        <div class="topic-title">${topic.title}</div>
                         <div class="topic-menu">
                             <button class="menu-btn"><i class="fas fa-ellipsis-v"></i></button>
                             <div class="menu-dropdown">
