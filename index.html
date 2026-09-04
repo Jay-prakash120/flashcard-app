@@ -11,7 +11,8 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" href="https://raw.githubusercontent.com/Jay-prakash120/flashcard-app/refs/heads/main/11053193.png" sizes="any" type="image/svg+xml">
+    <link rel="icon" href="https://raw.githubusercontent.com/Jay-prakash120/flashcard-app/refs/heads/main/11053193.png"
+        sizes="any" type="image/svg+xml">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#6366f1">
 
@@ -599,7 +600,10 @@
         /* ═══ TOPIC POSITION BY TIME — Windows Alarm-Style Modal ═══ */
         .tp-overlay {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: rgba(0, 0, 0, 0.55);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
@@ -609,7 +613,10 @@
             justify-content: center;
             padding: 20px;
         }
-        .tp-overlay.show { display: flex; }
+
+        .tp-overlay.show {
+            display: flex;
+        }
 
         .tp-modal {
             background: #1e1e1e;
@@ -618,17 +625,28 @@
             max-width: 420px;
             border-radius: 14px;
             padding: 28px 24px 24px;
-            box-shadow: 0 24px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06);
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.06);
             font-family: 'Segoe UI', 'Inter', sans-serif;
             animation: tpSlideIn 0.32s cubic-bezier(0.16, 1, 0.3, 1);
             max-height: 90vh;
             overflow-y: auto;
             scrollbar-width: none;
         }
-        .tp-modal::-webkit-scrollbar { display: none; }
+
+        .tp-modal::-webkit-scrollbar {
+            display: none;
+        }
+
         @keyframes tpSlideIn {
-            from { opacity: 0; transform: translateY(18px) scale(0.97); }
-            to   { opacity: 1; transform: translateY(0) scale(1); }
+            from {
+                opacity: 0;
+                transform: translateY(18px) scale(0.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .tp-modal-head {
@@ -637,25 +655,35 @@
             align-items: center;
             margin-bottom: 18px;
         }
+
         .tp-modal-head h3 {
             font-size: 1.25rem;
             font-weight: 600;
             color: #ffffff;
             margin: 0;
         }
+
         .tp-close-x {
-            background: none; border: none;
-            color: #888; font-size: 1.3rem;
-            cursor: pointer; padding: 4px 6px;
-            border-radius: 6px; line-height: 1;
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 6px;
+            line-height: 1;
             transition: all 0.15s;
         }
-        .tp-close-x:hover { color: #fff; background: #333; }
+
+        .tp-close-x:hover {
+            color: #fff;
+            background: #333;
+        }
 
         .tp-due-tag {
-            background: rgba(16,185,129,0.12);
+            background: rgba(16, 185, 129, 0.12);
             color: #34d399;
-            border: 1px solid rgba(16,185,129,0.25);
+            border: 1px solid rgba(16, 185, 129, 0.25);
             padding: 7px 12px;
             border-radius: 8px;
             font-size: 0.85rem;
@@ -665,9 +693,15 @@
             align-items: center;
             gap: 7px;
         }
-        .tp-due-tag strong { color: #6ee7b7; }
 
-        .tp-group { margin-bottom: 20px; }
+        .tp-due-tag strong {
+            color: #6ee7b7;
+        }
+
+        .tp-group {
+            margin-bottom: 20px;
+        }
+
         .tp-group-label {
             font-size: 0.88rem;
             font-weight: 600;
@@ -685,19 +719,23 @@
             position: relative;
             border-bottom: 3px solid #10b981;
         }
+
         .tp-wheel-frame::before,
         .tp-wheel-frame::after {
             content: '';
             position: absolute;
-            left: 0; right: 0;
+            left: 0;
+            right: 0;
             height: 28px;
             pointer-events: none;
             z-index: 2;
         }
+
         .tp-wheel-frame::before {
             top: 0;
             background: linear-gradient(to bottom, #2a2a2a 10%, transparent);
         }
+
         .tp-wheel-frame::after {
             bottom: 3px;
             background: linear-gradient(to top, #2a2a2a 10%, transparent);
@@ -712,7 +750,10 @@
             scrollbar-width: none;
             padding: 44px 0;
         }
-        .tp-wheel::-webkit-scrollbar { display: none; }
+
+        .tp-wheel::-webkit-scrollbar {
+            display: none;
+        }
 
         .tp-wheel-item {
             height: 42px;
@@ -728,6 +769,7 @@
             user-select: none;
             -webkit-user-select: none;
         }
+
         .tp-wheel-item.active {
             color: #ffffff;
             font-size: 1.7rem;
@@ -736,7 +778,9 @@
         }
 
         /* ── Position picker (single wheel) ── */
-        .tp-pos-picker { max-width: 140px; }
+        .tp-pos-picker {
+            max-width: 140px;
+        }
 
         /* ── Time pickers row ── */
         .tp-time-row {
@@ -744,12 +788,14 @@
             align-items: flex-start;
             gap: 10px;
         }
+
         .tp-time-col {
             flex: 1;
             display: flex;
             flex-direction: column;
             gap: 6px;
         }
+
         .tp-time-sublabel {
             font-size: 0.75rem;
             font-weight: 600;
@@ -758,11 +804,16 @@
             text-transform: uppercase;
             letter-spacing: 0.06em;
         }
+
         .tp-time-wheels {
             display: flex;
             gap: 3px;
         }
-        .tp-time-wheels .tp-wheel-frame { flex: 1; }
+
+        .tp-time-wheels .tp-wheel-frame {
+            flex: 1;
+        }
+
         .tp-time-sep-col {
             display: flex;
             align-items: center;
@@ -778,6 +829,7 @@
             gap: 10px;
             margin-top: 22px;
         }
+
         .tp-btn-save {
             flex: 1;
             background: #10b981;
@@ -794,7 +846,11 @@
             gap: 7px;
             transition: all 0.2s;
         }
-        .tp-btn-save:hover { background: #059669; color: #fff; }
+
+        .tp-btn-save:hover {
+            background: #059669;
+            color: #fff;
+        }
 
         .tp-btn-cancel {
             flex: 1;
@@ -812,7 +868,10 @@
             gap: 7px;
             transition: all 0.2s;
         }
-        .tp-btn-cancel:hover { background: #444; }
+
+        .tp-btn-cancel:hover {
+            background: #444;
+        }
 
         .tp-btn-remove {
             background: #dc2626;
@@ -829,16 +888,19 @@
             gap: 6px;
             transition: all 0.2s;
         }
-        .tp-btn-remove:hover { background: #b91c1c; }
+
+        .tp-btn-remove:hover {
+            background: #b91c1c;
+        }
 
         /* ── Badge on topic card ── */
         .tp-badge {
             display: inline-flex;
             align-items: center;
             gap: 4px;
-            background: rgba(16,185,129,0.12);
+            background: rgba(16, 185, 129, 0.12);
             color: #10b981;
-            border: 1px solid rgba(16,185,129,0.3);
+            border: 1px solid rgba(16, 185, 129, 0.3);
             font-size: 0.7rem;
             font-weight: 700;
             padding: 2px 8px;
@@ -982,7 +1044,7 @@
             margin-bottom: 40px;
         }
 
-        
+
         .card {
             background: var(--bg-card);
             border-radius: var(--radius);
@@ -991,7 +1053,7 @@
             border: 1px solid rgba(0, 0, 0, 0.02);
             transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
         }
-        
+
         .card h2 {
             font-size: 1.25rem;
             margin-bottom: 24px;
@@ -1879,8 +1941,15 @@
         }
 
         @keyframes kbHintFadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 0.8; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(4px);
+            }
+
+            to {
+                opacity: 0.8;
+                transform: translateY(0);
+            }
         }
 
         .topic-header {
@@ -2159,10 +2228,12 @@
                 transform: translateX(-100%);
                 opacity: 1;
             }
+
             60% {
                 transform: translateX(100%);
                 opacity: 1;
             }
+
             100% {
                 transform: translateX(100%);
                 opacity: 0;
@@ -2176,14 +2247,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(
-                105deg,
-                transparent 30%,
-                rgba(99, 102, 241, 0.12) 45%,
-                rgba(139, 92, 246, 0.2) 50%,
-                rgba(99, 102, 241, 0.12) 55%,
-                transparent 70%
-            );
+            background: linear-gradient(105deg,
+                    transparent 30%,
+                    rgba(99, 102, 241, 0.12) 45%,
+                    rgba(139, 92, 246, 0.2) 50%,
+                    rgba(99, 102, 241, 0.12) 55%,
+                    transparent 70%);
             border-radius: 20px;
             z-index: 15;
             pointer-events: none;
@@ -2196,7 +2265,7 @@
            */
         /*To use: comment out Option 1 above, uncomment below.
         */
-      /*  @keyframes editBorderGlow {
+        /*  @keyframes editBorderGlow {
             0% {
                 clip-path: inset(0 100% 0 0);
                 opacity: 1;
@@ -2235,8 +2304,8 @@
            card once, then disappears. Like a "power-on" effect.
            To use: comment out Option 1 above, uncomment below.
         */
-        
-       /* @keyframes editGradientFlash {
+
+        /* @keyframes editGradientFlash {
             0% {
                 background-position: -200% center;
                 opacity: 0.8;
@@ -2498,25 +2567,26 @@
             border-color: #fef2f2;
             user-select: none;
         }
-        
+
         .option-hard {
             color: #d97706;
             border-color: #fffbeb;
             user-select: none;
         }
-    
-    .option-good {
-        color: #059669;
-        border-color: #ecfdf5;
-        user-select: none;
-    }
-.option-easy {
-    color: #2563eb;
-    border-color: #eff6ff;
-    user-select: none;
-    }
-    
-    .option-again {
+
+        .option-good {
+            color: #059669;
+            border-color: #ecfdf5;
+            user-select: none;
+        }
+
+        .option-easy {
+            color: #2563eb;
+            border-color: #eff6ff;
+            user-select: none;
+        }
+
+        .option-again {
             background: #fef2f2;
         }
 
@@ -3123,8 +3193,7 @@
 
         .flashcard-label,
         .flashcard-hint,
-        .close-modal
-         {
+        .close-modal {
             user-select: none;
         }
 
@@ -3260,34 +3329,41 @@
         #recovery-toast-msg {
             width: 221px;
         }
-            @media (max-width: 900px) {
-                .dashboard {
-                    grid-template-columns: 1fr;
-                }
-                .data-controls{
-                    top: 10px;
-                    left: 7px;
-                    gap: 5px;
-                }
-                .theme-toggle{
-                    top: 10px;
-                    right: 6px;
-                }
-                .flashcard-face{
-                    padding: 0px;
-                    padding-top: 14px;
-                }
-                .modal-content{
-                    padding: 40px 15px;
-                }
+
+        @media (max-width: 900px) {
+            .dashboard {
+                grid-template-columns: 1fr;
             }
+
+            .data-controls {
+                top: 10px;
+                left: 7px;
+                gap: 5px;
+            }
+
+            .theme-toggle {
+                top: 10px;
+                right: 6px;
+            }
+
+            .flashcard-face {
+                padding: 0px;
+                padding-top: 14px;
+            }
+
+            .modal-content {
+                padding: 40px 15px;
+            }
+        }
 
         /* ===== DETAILS MODAL ===== */
         .details-modal {
             display: none;
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: rgb(20 18 16 / 70%);
             backdrop-filter: blur(4px);
             z-index: 1000;
@@ -3330,7 +3406,7 @@
             border-radius: 14px;
             padding: 16px 14px;
             text-align: center;
-            border: 1px solid rgba(0,0,0,0.04);
+            border: 1px solid rgba(0, 0, 0, 0.04);
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
@@ -3392,7 +3468,7 @@
             background: var(--bg-body);
             border-radius: 16px;
             padding: 18px;
-            border: 1px solid rgba(0,0,0,0.04);
+            border: 1px solid rgba(0, 0, 0, 0.04);
             position: relative;
         }
 
@@ -3458,7 +3534,7 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
             padding: 10px 12px;
-            border-bottom: 2px solid rgba(0,0,0,0.06);
+            border-bottom: 2px solid rgba(0, 0, 0, 0.06);
             position: sticky;
             top: 0;
             background: var(--bg-body);
@@ -3467,7 +3543,7 @@
 
         .details-history-table td {
             padding: 10px 12px;
-            border-bottom: 1px solid rgba(0,0,0,0.04);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
             color: var(--text-main);
         }
 
@@ -3476,7 +3552,7 @@
         }
 
         .details-history-table tbody tr:hover {
-            background: rgba(99,102,241,0.04);
+            background: rgba(99, 102, 241, 0.04);
         }
 
         body.dark-mode .details-history-table th {
@@ -3489,7 +3565,7 @@
         }
 
         body.dark-mode .details-history-table tbody tr:hover {
-            background: rgba(99,102,241,0.08);
+            background: rgba(99, 102, 241, 0.08);
         }
 
         .details-rating-badge {
@@ -3502,19 +3578,50 @@
             letter-spacing: 0.3px;
         }
 
-        .details-rating-badge.rating-again { background: rgba(220,38,38,0.12); color: #dc2626; }
-        .details-rating-badge.rating-hard { background: rgba(217,119,6,0.12); color: #d97706; }
-        .details-rating-badge.rating-good { background: rgba(5,150,105,0.12); color: #059669; }
-        .details-rating-badge.rating-easy { background: rgba(37,99,235,0.12); color: #2563eb; }
+        .details-rating-badge.rating-again {
+            background: rgba(220, 38, 38, 0.12);
+            color: #dc2626;
+        }
 
-        body.dark-mode .details-rating-badge.rating-again { background: rgba(220,38,38,0.2); color: #fca5a5; }
-        body.dark-mode .details-rating-badge.rating-hard { background: rgba(217,119,6,0.2); color: #fbbf24; }
-        body.dark-mode .details-rating-badge.rating-good { background: rgba(5,150,105,0.2); color: #6ee7b7; }
-        body.dark-mode .details-rating-badge.rating-easy { background: rgba(37,99,235,0.2); color: #93c5fd; }
+        .details-rating-badge.rating-hard {
+            background: rgba(217, 119, 6, 0.12);
+            color: #d97706;
+        }
+
+        .details-rating-badge.rating-good {
+            background: rgba(5, 150, 105, 0.12);
+            color: #059669;
+        }
+
+        .details-rating-badge.rating-easy {
+            background: rgba(37, 99, 235, 0.12);
+            color: #2563eb;
+        }
+
+        body.dark-mode .details-rating-badge.rating-again {
+            background: rgba(220, 38, 38, 0.2);
+            color: #fca5a5;
+        }
+
+        body.dark-mode .details-rating-badge.rating-hard {
+            background: rgba(217, 119, 6, 0.2);
+            color: #fbbf24;
+        }
+
+        body.dark-mode .details-rating-badge.rating-good {
+            background: rgba(5, 150, 105, 0.2);
+            color: #6ee7b7;
+        }
+
+        body.dark-mode .details-rating-badge.rating-easy {
+            background: rgba(37, 99, 235, 0.2);
+            color: #93c5fd;
+        }
 
         .details-difficulty-dot {
             display: inline-block;
-            width: 8px; height: 8px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             margin-right: 5px;
         }
@@ -3524,7 +3631,7 @@
             overflow-y: auto;
             border-radius: 12px;
             background: var(--bg-body);
-            border: 1px solid rgba(0,0,0,0.04);
+            border: 1px solid rgba(0, 0, 0, 0.04);
         }
 
         body.dark-mode .details-history-scroll {
@@ -3547,9 +3654,21 @@
 
 
         @media (max-width: 600px) {
-            .details-summary-row { grid-template-columns: repeat(2, 1fr); }
-            .details-charts-grid { grid-template-columns: 1fr; }
-            .details-modal .modal-content { padding: 24px 14px; }
+            .details-summary-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .details-charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .details-modal .modal-content {
+                padding: 24px 14px;
+            }
+        }
+
+        body:has(#flashcard-modal[style*="display: flex"]) #scroll-to-top {
+            display: none !important;
         }
     </style>
 </head>
@@ -3571,7 +3690,7 @@
                     <i class="fas fa-cloud-upload-alt"></i>
                 </button>
                 <!-- <a href="mistake.html" class="control-icon-btn" id="mistakeflow-btn" aria-label="MistakeFlow" title="MistakeFlow — Track your mistakes" style="text-decoration:none;"> -->
-                    <!-- <i class="fas fa-bug" style="color:#ef4444;"></i> -->
+                <!-- <i class="fas fa-bug" style="color:#ef4444;"></i> -->
                 </a>
             </div>
 
@@ -4009,19 +4128,27 @@
     <div class="cloud-modal-overlay" id="easy-deletion-modal-overlay">
         <div class="cloud-modal" style="max-width: 460px; text-align: center; border-radius: 24px; padding: 36px 30px;">
             <div style="font-size: 3.2rem; margin-bottom: 8px;">🎓</div>
-            <h2 style="justify-content: center; margin-bottom: 8px; font-size: 1.5rem; color: var(--text-main);">Topic Mastered!</h2>
-            <p class="modal-subtitle" id="easy-deletion-subtitle" style="margin-bottom: 20px; font-size: 0.95rem; color: var(--text-muted);">
-                You've reviewed "<strong id="easy-deletion-topic-title" style="color: var(--primary);"></strong>" <span id="easy-deletion-count" style="font-weight: 700;"></span> times and achieved <strong style="color: var(--success);">long-term mastery</strong>!
+            <h2 style="justify-content: center; margin-bottom: 8px; font-size: 1.5rem; color: var(--text-main);">Topic
+                Mastered!</h2>
+            <p class="modal-subtitle" id="easy-deletion-subtitle"
+                style="margin-bottom: 20px; font-size: 0.95rem; color: var(--text-muted);">
+                You've reviewed "<strong id="easy-deletion-topic-title" style="color: var(--primary);"></strong>" <span
+                    id="easy-deletion-count" style="font-weight: 700;"></span> times and achieved <strong
+                    style="color: var(--success);">long-term mastery</strong>!
             </p>
-            <div style="background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.2); padding: 14px 16px; border-radius: 14px; margin-bottom: 24px; font-size: 0.88rem; color: var(--text-main); text-align: left; line-height: 1.5;">
-                <i class="fas fa-lightbulb" style="color: var(--warning); margin-right: 6px;"></i> 
-                This topic has reached a retention interval of <strong id="easy-deletion-interval"></strong> days. Would you like to <strong>delete</strong> it now to keep your study list clean?
+            <div
+                style="background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.2); padding: 14px 16px; border-radius: 14px; margin-bottom: 24px; font-size: 0.88rem; color: var(--text-main); text-align: left; line-height: 1.5;">
+                <i class="fas fa-lightbulb" style="color: var(--warning); margin-right: 6px;"></i>
+                This topic has reached a retention interval of <strong id="easy-deletion-interval"></strong> days. Would
+                you like to <strong>delete</strong> it now to keep your study list clean?
             </div>
             <div class="cloud-modal-actions" style="flex-direction: row; gap: 12px;">
-                <button id="btn-keep-topic" class="btn-cloud" onclick="closeEasyDeletionModal(false)" style="flex: 1; background: var(--bg-body); color: var(--text-main); border: 1.5px solid var(--text-muted); padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; outline-offset: 3px;">
+                <button id="btn-keep-topic" class="btn-cloud" onclick="closeEasyDeletionModal(false)"
+                    style="flex: 1; background: var(--bg-body); color: var(--text-main); border: 1.5px solid var(--text-muted); padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; outline-offset: 3px;">
                     <i class="fas fa-bookmark"></i> Keep Topic
                 </button>
-                <button id="btn-delete-topic" class="btn-cloud" onclick="confirmEasyDeletion()" style="flex: 1; background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border: none; padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35); outline-offset: 3px;">
+                <button id="btn-delete-topic" class="btn-cloud" onclick="confirmEasyDeletion()"
+                    style="flex: 1; background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border: none; padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35); outline-offset: 3px;">
                     <i class="fas fa-trash-alt"></i> Delete Topic
                 </button>
             </div>
@@ -4056,9 +4183,15 @@
                     <div class="tp-time-col">
                         <span class="tp-time-sublabel">Start</span>
                         <div class="tp-time-wheels">
-                            <div class="tp-wheel-frame"><div class="tp-wheel" id="tp-sh-wheel"></div></div>
-                            <div class="tp-wheel-frame"><div class="tp-wheel" id="tp-sm-wheel"></div></div>
-                            <div class="tp-wheel-frame"><div class="tp-wheel" id="tp-sa-wheel"></div></div>
+                            <div class="tp-wheel-frame">
+                                <div class="tp-wheel" id="tp-sh-wheel"></div>
+                            </div>
+                            <div class="tp-wheel-frame">
+                                <div class="tp-wheel" id="tp-sm-wheel"></div>
+                            </div>
+                            <div class="tp-wheel-frame">
+                                <div class="tp-wheel" id="tp-sa-wheel"></div>
+                            </div>
                         </div>
                     </div>
 
@@ -4068,9 +4201,15 @@
                     <div class="tp-time-col">
                         <span class="tp-time-sublabel">End</span>
                         <div class="tp-time-wheels">
-                            <div class="tp-wheel-frame"><div class="tp-wheel" id="tp-eh-wheel"></div></div>
-                            <div class="tp-wheel-frame"><div class="tp-wheel" id="tp-em-wheel"></div></div>
-                            <div class="tp-wheel-frame"><div class="tp-wheel" id="tp-ea-wheel"></div></div>
+                            <div class="tp-wheel-frame">
+                                <div class="tp-wheel" id="tp-eh-wheel"></div>
+                            </div>
+                            <div class="tp-wheel-frame">
+                                <div class="tp-wheel" id="tp-em-wheel"></div>
+                            </div>
+                            <div class="tp-wheel-frame">
+                                <div class="tp-wheel" id="tp-ea-wheel"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -4080,7 +4219,8 @@
             <div class="tp-footer">
                 <button class="tp-btn-save" onclick="saveTPRule()"><i class="fas fa-save"></i> Save</button>
                 <button class="tp-btn-cancel" onclick="closeTPModal()"><i class="fas fa-times"></i> Cancel</button>
-                <button class="tp-btn-remove" id="tp-remove-btn" onclick="removeTPRule()" style="display:none;"><i class="fas fa-trash-alt"></i> Remove</button>
+                <button class="tp-btn-remove" id="tp-remove-btn" onclick="removeTPRule()" style="display:none;"><i
+                        class="fas fa-trash-alt"></i> Remove</button>
             </div>
         </div>
     </div>
@@ -4439,7 +4579,7 @@
 
                 let selectedItem = document.querySelector(".kb-selected");
 
-                if(e.key === 'Delete' && selectedItem) deleteTopic(`${selectedItem.dataset.topicId}`)
+                if (e.key === 'Delete' && selectedItem) deleteTopic(`${selectedItem.dataset.topicId}`)
 
                 if (e.ctrlKey || e.metaKey) {
 
@@ -6612,7 +6752,7 @@
                 // Map our 1-4 rating scale to SM-2's 0-5 scale
                 // 2 (Hard) -> 3, 3 (Good) -> 4, 4 (Easy) -> 5
                 const q = rating + 1;
-                
+
                 let newEaseFactor = currentTopic.easeFactor + (0.1 - (5 - q) * (0.08 + (5 - q) * 0.02));
                 if (newEaseFactor < 1.3) newEaseFactor = 1.3;
                 currentTopic.easeFactor = newEaseFactor;
@@ -7466,7 +7606,7 @@
         }
 
         // 'd' key shortcut: open details for keyboard-selected topic
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             if (e.key.toLowerCase() === 'd' && !e.ctrlKey && !e.metaKey) {
                 const activeEl = document.activeElement;
                 const isInput = activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.isContentEditable;
@@ -7615,10 +7755,10 @@
             // ============================================================
             //  MULTI-CURSOR SYSTEM
             // ============================================================
-            let mcCursors = [];        
-            let mcTextarea = null;     
-            let mcCol = -1;            
-            let mcContainer = null;    
+            let mcCursors = [];
+            let mcTextarea = null;
+            let mcCol = -1;
+            let mcContainer = null;
 
             if (!document.getElementById('mc-style')) {
                 const st = document.createElement('style');
@@ -7630,10 +7770,10 @@
             function getCaretCoords(ta, pos) {
                 const mirror = document.createElement('div');
                 const cs = getComputedStyle(ta);
-                ['fontFamily','fontSize','fontWeight','fontStyle','letterSpacing','wordSpacing',
-                 'lineHeight','textIndent','paddingTop','paddingRight','paddingBottom','paddingLeft',
-                 'borderTopWidth','borderRightWidth','borderBottomWidth','borderLeftWidth',
-                 'boxSizing','width','whiteSpace','wordWrap','overflowWrap','tabSize'
+                ['fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'letterSpacing', 'wordSpacing',
+                    'lineHeight', 'textIndent', 'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft',
+                    'borderTopWidth', 'borderRightWidth', 'borderBottomWidth', 'borderLeftWidth',
+                    'boxSizing', 'width', 'whiteSpace', 'wordWrap', 'overflowWrap', 'tabSize'
                 ].forEach(p => { mirror.style[p] = cs[p]; });
                 mirror.style.position = 'absolute';
                 mirror.style.visibility = 'hidden';
@@ -7664,9 +7804,9 @@
                     document.body.appendChild(mcContainer);
                 }
                 mcContainer.innerHTML = '';
-                
+
                 if (!mcTextarea || mcCursors.length === 0) {
-                    if (mcTextarea) mcTextarea.style.caretColor = ''; 
+                    if (mcTextarea) mcTextarea.style.caretColor = '';
                     return;
                 }
 
@@ -7888,9 +8028,9 @@
                     const ta = mcTextarea;
                     const newPos = ta.selectionStart;
                     ta.selectionEnd = ta.selectionStart; // Force collapsed selection
-                    
+
                     let oldWithoutNew = altClickOldCursors.filter(p => p !== newPos);
-                    
+
                     if (oldWithoutNew.length === altClickOldCursors.length) {
                         // User clicked a new spot, add it!
                         mcCursors = oldWithoutNew;
