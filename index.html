@@ -5950,11 +5950,30 @@
             const groups = container.querySelectorAll('.flashcard-input-group');
             const cards = [];
             groups.forEach(group => {
-                const question = group.querySelector('.fc-question').value;
-                const answer = group.querySelector('.fc-answer').value;
-                if (question && answer) {
-                    cards.push({ id: Date.now() + Math.random(), front: question, back: answer });
+                const qEl = group.querySelector('.fc-question');
+                const aEl = group.querySelector('.fc-answer');
+                let question = qEl ? qEl.value : '';
+                let answer = aEl ? aEl.value : '';
+                const qTrim = question.trim();
+                const aTrim = answer.trim();
+
+                // If both are empty, simply skip (current behavior)
+                if (!qTrim && !aTrim) {
+                    return;
                 }
+
+                // If question is present but answer is empty, fill answer with "..."
+                if (qTrim && !aTrim) {
+                    answer = '...';
+                    if (aEl) aEl.value = '...';
+                }
+                // If answer is present but question is empty, fill question with "..."
+                else if (!qTrim && aTrim) {
+                    question = '...';
+                    if (qEl) qEl.value = '...';
+                }
+
+                cards.push({ id: Date.now() + Math.random(), front: question, back: answer });
             });
             return cards;
         }
@@ -6138,12 +6157,25 @@
 
         function saveInlineEdit() {
             hideRecoveryToast();
-            const newQuestion = document.getElementById('fc-edit-question').value;
-            const newAnswer = document.getElementById('fc-edit-answer').value;
+            const qEl = document.getElementById('fc-edit-question');
+            const aEl = document.getElementById('fc-edit-answer');
+            let newQuestion = qEl ? qEl.value : '';
+            let newAnswer = aEl ? aEl.value : '';
 
-            if (!newQuestion.trim() || !newAnswer.trim()) {
-                alert('Both question and answer are required.');
+            const qTrim = newQuestion.trim();
+            const aTrim = newAnswer.trim();
+
+            if (!qTrim && !aTrim) {
+                alert('Please enter a question or answer.');
                 return;
+            }
+
+            if (qTrim && !aTrim) {
+                newAnswer = '...';
+                if (aEl) aEl.value = '...';
+            } else if (!qTrim && aTrim) {
+                newQuestion = '...';
+                if (qEl) qEl.value = '...';
             }
 
             // Update the card in the current set
@@ -6668,7 +6700,7 @@
             currentReviewTopic = topics.find(topic => topic.id === topicId);
             if (currentReviewTopic) {
                 document.getElementById('review-topic-title').textContent = currentReviewTopic.title;
-                document.getElementById('review-topic-description').innerHTML = currentReviewTopic.description ? renderQuestion(currentReviewTopic.description) : 'No description provided';
+                document.getElementById('review-topic-description').innerHTML = currentReviewTopic.description ? renderQuestion(currentReviewTopic.description) : '...';
 
                 const lastReviewed = currentReviewTopic.lastReviewed ?
                     formatDateDMY(currentReviewTopic.lastReviewed) :
