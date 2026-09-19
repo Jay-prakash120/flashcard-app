@@ -4728,6 +4728,47 @@
             MAX_LOGS: 1000,
             MAX_AGE_MS: 7 * 24 * 60 * 60 * 1000, // 7 days
 
+            getDeviceInfo() {
+                try {
+                    const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+                    const width = window.innerWidth;
+                    const height = window.innerHeight;
+                    const ua = navigator.userAgent || '';
+
+                    let deviceType = 'Desktop';
+                    if (/iPad|Tablet|(android(?!.*mobile))/i.test(ua)) {
+                        deviceType = 'Tablet';
+                    } else if (/Mobile|Android|iP(hone|od)/i.test(ua)) {
+                        deviceType = 'Mobile';
+                    } else if (isTouch && (width <= 1024 || height <= 1024)) {
+                        deviceType = 'Tablet/Touch';
+                    }
+
+                    let browser = 'Unknown';
+                    if (/Edg\//i.test(ua)) browser = 'Edge';
+                    else if (/Chrome\//i.test(ua)) browser = 'Chrome';
+                    else if (/Firefox\//i.test(ua)) browser = 'Firefox';
+                    else if (/Safari\//i.test(ua) && !/Chrome\//i.test(ua)) browser = 'Safari';
+
+                    let os = 'Unknown OS';
+                    if (/Win/i.test(ua)) os = 'Windows';
+                    else if (/Mac/i.test(ua)) os = 'macOS';
+                    else if (/Android/i.test(ua)) os = 'Android';
+                    else if (/iPhone|iPad|iPod/i.test(ua)) os = 'iOS';
+                    else if (/Linux/i.test(ua)) os = 'Linux';
+
+                    return {
+                        type: deviceType,
+                        os: os,
+                        browser: browser,
+                        screen: `${width}x${height}`,
+                        touch: isTouch
+                    };
+                } catch (_) {
+                    return { type: 'Unknown' };
+                }
+            },
+
             sanitize(text) {
                 if (typeof text !== 'string') return text;
                 return text
@@ -4839,18 +4880,21 @@
 
         // Capture unhandled runtime errors
         window.addEventListener('error', (event) => {
+            const stack = (event.error && event.error.stack) ? String(event.error.stack).substring(0, 500) : null;
             EventLogger.log('SYSTEM', `Uncaught Error: ${event.message || 'Unknown error'}`, {
-                file: event.filename ? event.filename.split('/').pop() : 'unknown',
+                file: event.filename ? event.filename.split('/').pop() : 'inline',
                 line: event.lineno,
-                column: event.colno
+                column: event.colno,
+                stack: stack
             }, 'ERROR');
         });
 
         window.addEventListener('unhandledrejection', (event) => {
             const reason = event.reason;
             const msg = (reason && reason.message) ? reason.message : String(reason);
+            const stack = (reason && reason.stack) ? String(reason.stack).substring(0, 500) : null;
             EventLogger.log('SYSTEM', `Unhandled Promise Rejection: ${msg}`, {
-                stack: reason && reason.stack ? reason.stack.substring(0, 300) : null
+                stack: stack
             }, 'ERROR');
         });
 
@@ -5137,7 +5181,8 @@
             EventLogger.pruneLogs();
             EventLogger.log('SYSTEM', 'FocusFlow initialized', {
                 topicsCount: topics.length,
-                streak: streakData.currentStreak
+                streak: streakData.currentStreak,
+                device: EventLogger.getDeviceInfo()
             });
             cleanupSynthesizedHistory();
             updateStreak();
@@ -5173,6 +5218,7 @@
 
             // Global Keyboard Shortcuts (Ctrl+S, Ctrl+Number)
             window.addEventListener('keydown', function (e) {
+                if (!e || !e.key) return;
                 const easyOverlay = document.getElementById('easy-deletion-modal-overlay');
                 if (easyOverlay && easyOverlay.classList.contains('show')) {
                     if (e.key === 'Escape') {
@@ -5260,7 +5306,7 @@
                 const isInput = activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.isContentEditable;
 
                 // --- 'a' or 'n' key: scroll to top and focus Topic Title ---
-                if ((e.key.toLowerCase() === 'a' || e.key.toLowerCase() === 'n') && !e.ctrlKey && !e.metaKey && !isInput) {
+                if ((e.key?.toLowerCase() === 'a' || e.key?.toLowerCase() === 'n') && !e.ctrlKey && !e.metaKey && !isInput) {
                     const isAnyModalOpen = (flashcardModal && flashcardModal.style.display === 'flex') ||
                         (reviewModal && reviewModal.style.display === 'flex') ||
                         (editModal && editModal.style.display === 'flex') ||
@@ -5277,7 +5323,7 @@
                 }
 
                 // Go To top by pressing `t`
-                if (e.key.toLowerCase() === 't' && !e.ctrlKey && !e.metaKey && !isInput) {
+                if (e.key?.toLowerCase() === 't' && !e.ctrlKey && !e.metaKey && !isInput) {
                     const isAnyModalOpen = (flashcardModal && flashcardModal.style.display === 'flex') ||
                         (reviewModal && reviewModal.style.display === 'flex') ||
                         (editModal && editModal.style.display === 'flex') ||
@@ -5290,7 +5336,7 @@
                 }
 
                 // Go To bottom by pressing `b` 
-                if (e.key.toLowerCase() === 'b' && !e.ctrlKey && !e.metaKey && !isInput) {
+                if (e.key?.toLowerCase() === 'b' && !e.ctrlKey && !e.metaKey && !isInput) {
                     const isAnyModalOpen = (flashcardModal && flashcardModal.style.display === 'flex') ||
                         (reviewModal && reviewModal.style.display === 'flex') ||
                         (editModal && editModal.style.display === 'flex') ||
@@ -5377,7 +5423,7 @@
                 if (e.ctrlKey || e.metaKey) {
 
                     // --- Ctrl + S (Save) ---
-                    if (e.key.toLowerCase() === 's') {
+                    if (e.key?.toLowerCase() === 's') {
                         e.preventDefault(); // Stop browser from showing "Save Page As"
 
                         // 1. Is individual flashcard inline edit active?
@@ -5446,7 +5492,7 @@
                     }
 
                     // --- Ctrl + E (Edit individual flashcard / edit from review window) ---
-                    if (e.key.toLowerCase() === 'e' && !e.shiftKey) {
+                    if (e.key?.toLowerCase() === 'e' && !e.shiftKey) {
                         if (flashcardModal && flashcardModal.style.display === 'flex') {
                             const inlineEdit = document.getElementById('fc-inline-edit');
                             if (!inlineEdit || !inlineEdit.classList.contains('active')) {
@@ -5474,7 +5520,7 @@
                     }
 
                     // --- Ctrl + Shift + E (Edit all cards / open topic editor) ---
-                    if (e.key.toLowerCase() === 'e' && e.shiftKey) {
+                    if (e.key?.toLowerCase() === 'e' && e.shiftKey) {
                         if (flashcardModal && flashcardModal.style.display === 'flex' && currentFlashcardTopicId) {
                             e.preventDefault();
                             flashcardModal.style.display = 'none';
@@ -5528,7 +5574,7 @@
                         }
 
                         // 'r' key → open review modal
-                        if (e.key.toLowerCase() === 'r' && !e.ctrlKey) {
+                        if (e.key?.toLowerCase() === 'r' && !e.ctrlKey) {
                             e.preventDefault();
                             flashcardModal.style.display = 'none';
                             startReview(currentFlashcardTopicId);
@@ -6141,6 +6187,7 @@
             // Prevent concurrent syncs
             if (_syncLock) return;
             _syncLock = true;
+            const syncStartTime = Date.now();
             EventLogger.log('SYNC', `Cloud sync initiated (${source})`, { source });
 
             try {
@@ -6167,7 +6214,7 @@
                     if (res.status === 401) {
                         quietToast('Cloud token expired — reconnect in settings', true);
                     }
-                    EventLogger.log('SYNC', `Gist fetch failed (HTTP ${res.status})`, { status: res.status, source }, 'ERROR');
+                    EventLogger.log('SYNC', `Gist fetch failed (HTTP ${res.status})`, { status: res.status, source, durationMs: Date.now() - syncStartTime }, 'ERROR');
                     throw new Error(`Gist fetch failed (${res.status})`);
                 } else {
                     // 200 OK — fresh data from GitHub
@@ -6178,7 +6225,7 @@
                     const fileContent = gist.files && gist.files['FocusFlow_Backup.json'];
                     if (!fileContent || !fileContent.content) {
                         // Gist exists but file is empty — push local
-                        EventLogger.log('SYNC', 'Gist backup file is empty; pushing local data', { source });
+                        EventLogger.log('SYNC', 'Gist backup file is empty; pushing local data', { source, durationMs: Date.now() - syncStartTime });
                         await pushToCloud(config);
                         return;
                     }
@@ -6232,7 +6279,12 @@
                     }
                     EventLogger.log('SYNC', `Applied merged data from cloud (${source})`, {
                         localTopics: (localData.topics || []).length,
-                        mergedTopics: (merged.topics || []).length
+                        mergedTopics: (merged.topics || []).length,
+                        localStreak: (localData.streakData || {}).currentStreak || 0,
+                        cloudStreak: (cloudData.streakData || {}).currentStreak || 0,
+                        mergedStreak: (merged.streakData || {}).currentStreak || 0,
+                        lastReviewDate: (merged.streakData || {}).lastReviewDate || null,
+                        durationMs: Date.now() - syncStartTime
                     });
                 }
 
@@ -6243,7 +6295,10 @@
                         quietToast('Auto-synced to cloud ☁️');
                     }
                     EventLogger.log('SYNC', `Pushed local updates to cloud (${source})`, {
-                        topicsCount: (merged.topics || []).length
+                        topicsCount: (merged.topics || []).length,
+                        streak: (merged.streakData || {}).currentStreak || 0,
+                        lastReviewDate: (merged.streakData || {}).lastReviewDate || null,
+                        durationMs: Date.now() - syncStartTime
                     });
                 }
 
@@ -6251,7 +6306,13 @@
                     EventLogger.log('SYNC', is304
                         ? `Cloud sync complete: 304 Not Modified (${source})`
                         : `Cloud sync complete: already up to date (${source})`,
-                        { source, is304 }
+                        {
+                            source,
+                            is304,
+                            topicsCount: (localData?.topics || topics || []).length,
+                            streak: streakData.currentStreak,
+                            durationMs: Date.now() - syncStartTime
+                        }
                     );
                 }
 
@@ -6261,7 +6322,11 @@
 
             } catch (err) {
                 console.warn(`Cloud sync failed (${source}):`, err);
-                EventLogger.log('SYNC', `Cloud sync failed (${source}): ${err.message}`, { error: err.message, source }, 'ERROR');
+                EventLogger.log('SYNC', `Cloud sync failed (${source}): ${err.message}`, {
+                    error: err.message,
+                    source,
+                    durationMs: Date.now() - syncStartTime
+                }, 'ERROR');
                 if (source === 'change' || source === 'manual') {
                     quietToast('Cloud sync failed!', true);
                 }
@@ -7250,12 +7315,18 @@
             document.addEventListener('visibilitychange', () => {
                 if (document.visibilityState === 'hidden') {
                     saveDraft();
+                    if (cloudSyncTimer || _syncLock) {
+                        localStorage.setItem('pendingCloudSync', 'true');
+                    }
                 }
             });
 
             // Immediate save on page unload
             window.addEventListener('beforeunload', () => {
                 saveDraft();
+                if (cloudSyncTimer || _syncLock) {
+                    localStorage.setItem('pendingCloudSync', 'true');
+                }
             });
         }
 
@@ -8587,7 +8658,8 @@
 
         // 'd' key shortcut: open details for keyboard-selected topic
         document.addEventListener('keydown', function (e) {
-            if (e.key.toLowerCase() === 'd' && !e.ctrlKey && !e.metaKey) {
+            if (!e || !e.key) return;
+            if (e.key?.toLowerCase() === 'd' && !e.ctrlKey && !e.metaKey) {
                 const activeEl = document.activeElement;
                 const isInput = activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.isContentEditable;
                 if (isInput) return;
@@ -8875,7 +8947,7 @@
                     const lowest = Math.min(...all) + 1;
                     ta.selectionStart = ta.selectionEnd = lowest;
                     mcCursors = all.slice(0, -1).map((p, i) => p + 1 + (all.length - 1 - i));
-                } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                } else if (e.key && e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
                     const ch = e.key;
                     all.forEach(p => { val = val.substring(0, p) + ch + val.substring(p); });
                     ta.focus(); ta.select(); document.execCommand('insertText', false, val);
@@ -8895,6 +8967,7 @@
             //  MAIN KEYDOWN HANDLER
             // ============================================================
             document.addEventListener('keydown', function (e) {
+                if (!e || !e.key) return;
                 const ta = e.target;
                 const alt = e.altKey, shift = e.shiftKey, ctrl = e.ctrlKey || e.metaKey;
 
@@ -8935,7 +9008,7 @@
 
                 // If multi-cursor is active, intercept typing keys and left/right arrows
                 if (mcCursors.length > 0 && mcTextarea === ta) {
-                    if (['Backspace', 'Delete', 'Enter', 'ArrowLeft', 'ArrowRight'].includes(e.key) || (e.key.length === 1 && !ctrl && !alt)) {
+                    if (['Backspace', 'Delete', 'Enter', 'ArrowLeft', 'ArrowRight'].includes(e.key) || (e.key && e.key.length === 1 && !ctrl && !alt)) {
                         e.preventDefault();
                         mcApplyKey(ta, e.key, e);
                         return;
